@@ -12,8 +12,8 @@
     }
 
     body {
-      background-color: #e60000;
-      color: #080808;
+      background-color: #ff0000;
+      color: #0d0000;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-weight: 900;
       text-transform: uppercase;
@@ -22,18 +22,52 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      letter-spacing: -0.04em;
-      overflow-x: hidden;
+      letter-spacing: -0.03em;
     }
 
-    /* SVG Filter toepassing voor ruwe/rafelige grunge randen */
-    .grunge-text {
-      filter: url(#grunge-distortion);
-      text-shadow: 0 0 1px #080808;
+    /* Interactief Navigatie Menu */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 3px solid #0d0000;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
     }
 
-    /* Top Grid */
-    .grid-top {
+    .nav-item {
+      font-size: clamp(1.2rem, 3vw, 2.2rem);
+      color: #0d0000;
+      text-decoration: none;
+      opacity: 0.3;
+      transition: all 0.25s ease-in-out;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background-color: #0d0000;
+      transition: width 0.25s ease-in-out;
+    }
+
+    .nav-item:hover::after,
+    .nav-item.active::after {
+      width: 100%;
+    }
+
+    /* Rationele Grid & Content */
+    .header-info {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -41,97 +75,78 @@
       line-height: 0.9;
     }
 
-    .small-text-block {
-      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-      line-height: 1.15;
-      max-width: 75%;
-      margin-top: 1.5rem;
-      letter-spacing: 0em;
-      font-weight: 700;
+    .main-content {
+      margin: 6vh 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5vh;
     }
 
-    /* Middenstuk met geordende gegevens */
-    .center-content {
-      margin: 5vh 0;
-      text-align: center;
+    .statement {
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
     }
 
-    .location-tag {
-      font-size: clamp(2.2rem, 5.5vw, 5rem);
-      line-height: 0.85;
-      margin-bottom: 6vh;
-    }
-
-    .grid-row {
+    .grid-data {
       display: flex;
       justify-content: space-between;
-      font-size: clamp(1.4rem, 3.5vw, 3rem);
-      line-height: 0.9;
-      margin-bottom: 6vh;
+      font-size: clamp(1.3rem, 3vw, 2.5rem);
+      border-top: 2px solid #0d0000;
+      border-bottom: 2px solid #0d0000;
+      padding: 1.5rem 0;
     }
 
-    .effect-tag {
-      font-size: clamp(2rem, 4.5vw, 4.2rem);
-      line-height: 0.85;
-    }
-
-    /* Bottom Grid */
-    .grid-bottom {
+    /* Footer */
+    footer {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      font-size: clamp(1.5rem, 3.5vw, 3rem);
       line-height: 0.9;
-      border-top: 3px solid #080808;
-      padding-top: 1rem;
     }
 
-    .right-align {
+    .punchline {
       text-align: right;
+      max-width: 60%;
     }
   </style>
 </head>
 <body>
 
-  <!-- Onzichtbare SVG filter die de letters uitvreet/rafelig maakt -->
-  <svg style="position: absolute; width: 0; height: 0;">
-    <filter id="grunge-distortion">
-      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-    </filter>
-  </svg>
+  <!-- Menu bovenaan -->
+  <nav>
+    <a class="nav-item active">01</a>
+    <a class="nav-item">02</a>
+    <a class="nav-item">03</a>
+    <a class="nav-item">04</a>
+    <a class="nav-item">05</a>
+    <a class="nav-item">06</a>
+  </nav>
 
-  <!-- Bovenste blok -->
-  <header>
-    <div class="grid-top grunge-text">
-      <span>AUTO GESPOT</span>
-      <span>NO. 01</span>
-    </div>
-    <div class="small-text-block grunge-text">
-      DEZE WEEK HEB IK EEN AUTO GEZIEN OP MIJN TRIP IN DENEMARKEN. HIJ (OF ZIJ) IS SAAI MAAR WEL HEEL SEXY. JE ZIET MAAR WAT MAKE-UP KAN DOEN.
-    </div>
+  <!-- Kopinfo -->
+  <header class="header-info">
+    <span>AUTO GESPOT</span>
+    <span>NO. 01</span>
   </header>
 
-  <!-- Middenstuk met rationele opbouw -->
-  <main class="center-content">
-    <div class="location-tag grunge-text">LOCATIE: DENEMARKEN</div>
-
-    <div class="grid-row grunge-text">
-      <span>TYPE: SAAI</span>
-      <span>|</span>
-      <span>EIGENSCHAP: HEEL SEXY</span>
+  <!-- Kerntekst (Rationeel opgesteld, strakke Helvetica, geen herhaling) -->
+  <main class="main-content">
+    <div class="statement">
+      DEZE WEEK HEB IK EEN AUTO GEZIEN OP MIJN TRIP IN DENEMARKEN.
     </div>
 
-    <div class="effect-tag grunge-text">
-      MAKE-UP // EFFECT
+    <div class="grid-data">
+      <span>TYPE: SAAI</span>
+      <span>EIGENSCHAP: HEEL SEXY</span>
     </div>
   </main>
 
-  <!-- Onderste blok -->
+  <!-- Footer -->
   <footer>
-    <div class="grid-bottom grunge-text">
-      <span>DENEMARKEN TRIP</span>
-      <span class="right-align">JE ZIET MAAR WAT MAKE-UP KAN DOEN</span>
+    <span>DENEMARKEN</span>
+    <div class="punchline">
+      JE ZIET MAAR WAT MAKE-UP KAN DOEN.
     </div>
   </footer>
 
