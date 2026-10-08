@@ -16,7 +16,7 @@
       color: #050505;
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
-      padding: 3vw;
+      padding: 3vw; /* Dit is het raster/grid van de gehele pagina */
       min-height: 160vh;
       display: flex;
       flex-direction: column;
@@ -32,21 +32,23 @@
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Felblauwe TOYOTA: lager gepositioneerd, groter, en blendt met zwarte tekst */
+    /* TOYOTA exact gepositioneerd binnen de 3vw padding van het raster */
     .brand-overlay {
       position: absolute;
-      top: 26vh; /* Lager geplaatst */
-      right: 1.5vw;
+      /* Ligt horizontaal exact over de rechterhelft van het raster, eindigend op de rechter Marge (3vw) */
+      right: 3vw;
+      /* Begint op de hoogte van 'DEZE WEEK HEB IK EEN' */
+      top: calc(3vw + 2.8rem + 8vh);
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(6.5rem, 18vw, 21rem); /* Iets groter gemaakt */
+      font-size: clamp(7.5rem, 21.5vw, 26rem); /* Exact de schaal van het screenshot */
       font-weight: 900;
-      color: #0000ff; /* Feller, puur blauw */
-      mix-blend-mode: difference; /* Zorgt dat het blauw blijft op rood, maar verandert/blendt op het zwart */
+      color: #0000ff; /* Constant felblauw */
+      mix-blend-mode: screen; /* Houdt blauw fel op het rood, maar maakt overlappende delen lichter */
       pointer-events: none;
-      z-index: 15;
+      z-index: 10;
       white-space: nowrap;
-      letter-spacing: -0.04em;
-      line-height: 0.8;
+      letter-spacing: -0.05em;
+      line-height: 0.78;
       will-change: transform;
     }
 
@@ -106,7 +108,7 @@
     .statement {
       font-size: clamp(1.8rem, 4.2vw, 3.8rem);
       line-height: 1.05;
-      max-width: 90%;
+      max-width: 82%;
     }
 
     .grid-data {
@@ -198,6 +200,7 @@
     const brandText = document.getElementById('brandText');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
+      // Beweegt uitsluitend verticaal mee volgens het stramien
       brandText.style.transform = `translateY(${scrolled * 0.35}px)`;
     });
   </script>
