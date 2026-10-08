@@ -17,7 +17,7 @@
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
       padding: 3vw;
-      min-height: 150vh; /* Extra hoogte om het parallax scroll-effect voelbaar te maken */
+      min-height: 150vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -26,29 +26,36 @@
       position: relative;
     }
 
-    /* SVG Filter voor inkt-uitloop, korrel en vervaagde stempelranden */
+    /* Container voor correcte blending-isolatie */
+    .blend-container {
+      isolation: isolate;
+      position: relative;
+      width: 100%;
+    }
+
+    /* SVG Filter voor inkt-uitloop en stempelranden */
     .stamp-grunge {
       filter: url(#stamp-bleed);
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Gigantische Felblauwe Parallax Overlapping */
+    /* Felblauwe TOYOTA met interactieve blend */
     .brand-overlay {
       position: absolute;
-      top: 18vh;
+      top: 15vh;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: clamp(8rem, 26vw, 32rem);
       font-weight: 900;
-      color: #0000ff; /* Felblauw */
-      mix-blend-mode: multiply; /* Blendt rauw met de rode achtergrond en zwarte tekst */
+      color: #0000ff; /* Extreem fel blauw */
+      /* Screen / Difference zorgt dat blauw de zwarte tekst overschrijft en beïnvloedt */
+      mix-blend-mode: screen; 
       pointer-events: none;
-      z-index: 10;
+      z-index: 15;
       white-space: nowrap;
       letter-spacing: -0.05em;
       line-height: 0.8;
-      opacity: 0.95;
       will-change: transform;
     }
 
@@ -85,7 +92,7 @@
       transform: translateY(-2px);
     }
 
-    /* Grid & Rationele Indeling */
+    /* Grid & Indeling */
     .header-info {
       display: flex;
       justify-content: space-between;
@@ -150,7 +157,7 @@
     </filter>
   </svg>
 
-  <!-- Felblauwe Parallax Laag -->
+  <!-- Felblauwe Parallax Laag met 'screen' blend -->
   <div class="brand-overlay" id="brandText">TOYOTA</div>
 
   <!-- Menu bovenaan -->
@@ -169,7 +176,7 @@
     <span class="w-thin">NO. 01</span>
   </header>
 
-  <!-- Kerninhoud met variërende inkt-druktes -->
+  <!-- Kerninhoud -->
   <main class="main-content stamp-grunge">
     <div class="statement">
       <span class="w-regular">DEZE WEEK HEB IK EEN</span> 
@@ -198,7 +205,6 @@
     const brandText = document.getElementById('brandText');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
-      // Beweegt sneller en verschuift horizontaal tijdens het scrollen
       brandText.style.transform = `translate(calc(-50% + ${scrolled * 0.15}px), ${scrolled * 0.4}px)`;
     });
   </script>
