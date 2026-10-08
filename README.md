@@ -13,35 +13,48 @@
 
     body {
       background-color: #ff0000;
-      color: #0d0000;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-weight: 900;
+      color: #050505;
+      /* Typewriter/stamp uitstraling */
+      font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
       padding: 3vw;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
     }
 
-    /* Interactief Navigatie Menu */
+    /* SVG Filter voor inkt-uitloop, korrel en vervaagde stempelranden */
+    .stamp-grunge {
+      filter: url(#stamp-bleed);
+      text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
+    }
+
+    /* Dynamische inkt-druktes (weights) */
+    .w-thin { font-weight: 100; letter-spacing: 0.05em; }
+    .w-light { font-weight: 300; }
+    .w-regular { font-weight: 400; }
+    .w-bold { font-weight: 700; }
+    .w-heavy { font-weight: 900; letter-spacing: -0.03em; }
+
+    /* Navigatiemenu */
     nav {
       display: flex;
       justify-content: space-between;
-      border-bottom: 3px solid #0d0000;
-      padding-bottom: 1rem;
+      border-bottom: 2px solid #050505;
+      padding-bottom: 0.8rem;
       margin-bottom: 2rem;
     }
 
     .nav-item {
-      font-size: clamp(1.2rem, 3vw, 2.2rem);
-      color: #0d0000;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      color: #050505;
       text-decoration: none;
-      opacity: 0.3;
-      transition: all 0.25s ease-in-out;
+      opacity: 0.4;
+      transition: all 0.2s ease;
       cursor: pointer;
-      position: relative;
     }
 
     .nav-item:hover,
@@ -50,51 +63,35 @@
       transform: translateY(-2px);
     }
 
-    .nav-item::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 0%;
-      height: 3px;
-      background-color: #0d0000;
-      transition: width 0.25s ease-in-out;
-    }
-
-    .nav-item:hover::after,
-    .nav-item.active::after {
-      width: 100%;
-    }
-
-    /* Rationele Grid & Content */
+    /* Grid & Rationele Indeling */
     .header-info {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      font-size: clamp(1.8rem, 4vw, 3.5rem);
-      line-height: 0.9;
+      font-size: clamp(1.4rem, 3.2vw, 2.8rem);
+      line-height: 1;
     }
 
     .main-content {
-      margin: 6vh 0;
+      margin: 5vh 0;
       display: flex;
       flex-direction: column;
-      gap: 5vh;
+      gap: 4vh;
     }
 
     .statement {
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      line-height: 0.95;
-      letter-spacing: -0.04em;
+      font-size: clamp(1.8rem, 4.2vw, 3.8rem);
+      line-height: 1.05;
     }
 
     .grid-data {
       display: flex;
       justify-content: space-between;
-      font-size: clamp(1.3rem, 3vw, 2.5rem);
-      border-top: 2px solid #0d0000;
-      border-bottom: 2px solid #0d0000;
-      padding: 1.5rem 0;
+      align-items: center;
+      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      border-top: 2px dashed #050505;
+      border-bottom: 2px dashed #050505;
+      padding: 1.2rem 0;
     }
 
     /* Footer */
@@ -102,51 +99,65 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      font-size: clamp(1.5rem, 3.5vw, 3rem);
-      line-height: 0.9;
+      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      line-height: 1.1;
+      border-top: 2px solid #050505;
+      padding-top: 1rem;
     }
 
     .punchline {
       text-align: right;
-      max-width: 60%;
+      max-width: 55%;
     }
   </style>
 </head>
 <body>
 
+  <!-- SVG Stempel Inkt-bleed filter -->
+  <svg style="position: absolute; width: 0; height: 0;">
+    <filter id="stamp-bleed">
+      <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
   <!-- Menu bovenaan -->
-  <nav>
-    <a class="nav-item active">01</a>
-    <a class="nav-item">02</a>
-    <a class="nav-item">03</a>
-    <a class="nav-item">04</a>
-    <a class="nav-item">05</a>
-    <a class="nav-item">06</a>
+  <nav class="stamp-grunge">
+    <a class="nav-item active w-heavy">01</a>
+    <a class="nav-item w-light">02</a>
+    <a class="nav-item w-regular">03</a>
+    <a class="nav-item w-thin">04</a>
+    <a class="nav-item w-bold">05</a>
+    <a class="nav-item w-light">06</a>
   </nav>
 
-  <!-- Kopinfo -->
-  <header class="header-info">
-    <span>AUTO GESPOT</span>
-    <span>NO. 01</span>
+  <!-- Kop-informatie -->
+  <header class="header-info stamp-grunge">
+    <span class="w-heavy">AUTO GESPOT</span>
+    <span class="w-thin">NO. 01</span>
   </header>
 
-  <!-- Kerntekst (Rationeel opgesteld, strakke Helvetica, geen herhaling) -->
-  <main class="main-content">
+  <!-- Kerninhoud met variërende inkt-druktes -->
+  <main class="main-content stamp-grunge">
     <div class="statement">
-      DEZE WEEK HEB IK EEN AUTO GEZIEN OP MIJN TRIP IN DENEMARKEN.
+      <span class="w-regular">DEZE WEEK HEB IK EEN</span> 
+      <span class="w-heavy">AUTO</span> 
+      <span class="w-light">GEZIEN OP MIJN TRIP IN</span> 
+      <span class="w-bold">DENEMARKEN.</span>
     </div>
 
     <div class="grid-data">
-      <span>TYPE: SAAI</span>
-      <span>EIGENSCHAP: HEEL SEXY</span>
+      <span class="w-thin">TYPE: <strong class="w-heavy">SAAI</strong></span>
+      <span class="w-light">|</span>
+      <span class="w-regular">EIGENSCHAP: <strong class="w-heavy">HEEL SEXY</strong></span>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer>
-    <span>DENEMARKEN</span>
-    <div class="punchline">
-      JE ZIET MAAR WAT MAKE-UP KAN DOEN.
+  <footer class="stamp-grunge">
+    <span class="w-bold">DENEMARKEN TRIP</span>
+    <div class="punchline w-heavy">
+      JE ZIET MAAR WAT <span class="w-thin">MAKE-UP</span> KAN DOEN.
     </div>
   </footer>
 
