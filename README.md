@@ -36,15 +36,22 @@
   .light { font-weight: 300; }
   .bold  { font-weight: 800; }
 
-  /* Nummers = navigatie */
-  .nav { left: 68px; width: 754px; top: 12px; font-size: 16px; display: flex; justify-content: space-between; }
-  .nav a {
-    display: block; width: 24px; padding: 10px 6px; margin: -10px -6px; box-sizing: content-box;
-    color: #000; text-decoration: none; font-weight: 300; opacity: .16; cursor: pointer;
-    transition: opacity .12s;
+  /* ---------- Header met interactieve nummers (buiten het filter, dus altijd zichtbaar) ---------- */
+  .nav {
+    position: absolute; z-index: 3;
+    left: 68px; width: 754px; top: 12px;
+    font-size: 16px; line-height: 1;
+    display: flex; justify-content: space-between;
   }
-  .nav a:hover   { opacity: 1; font-weight: 800; }
-  .nav a.on      { opacity: 1; font-weight: 800; }
+  .nav a {
+    display: block; width: 24px; box-sizing: content-box;
+    padding: 12px 6px; margin: -12px -6px;
+    color: rgba(0,0,0,.28);
+    font-weight: 300; text-decoration: none; cursor: pointer;
+    transition: color .12s;
+  }
+  .nav a:hover, .nav a:focus-visible { color: #000; font-weight: 800; outline: none; }
+  .nav a.on { color: #000; font-weight: 800; }
 
   .rule { left: 68px; width: 752px; height: 2px; background: #000; }
   .dash { left: 68px; width: 752px; height: 0; border-top: 2px dashed #000; }
@@ -65,14 +72,13 @@
   .foot-r2 { right: 57px; top: 450px; font-size: 23px; font-weight: 800; }
   .foot-r1 span { font-weight: 300; }
 
-  /* Kleine flikkering bij het wisselen van pagina */
-  .flick { animation: flick .3s steps(4) both; }
+  /* Kleine flikkering bij het wisselen van pagina (laat de scroll-transform met rust) */
+  .flick { animation: flick .3s steps(4) backwards; }
   @keyframes flick {
     0%   { opacity: 0; }
-    25%  { opacity: 1; transform: translateX(-4px); }
+    25%  { opacity: 1; translate: -4px 0; }
     50%  { opacity: .2; }
-    75%  { opacity: 1; transform: translateX(3px); }
-    100% { opacity: 1; transform: none; }
+    75%  { opacity: 1; translate: 3px 0; }
   }
 
   /* ---------- Blauwe tekst ---------- */
@@ -90,15 +96,17 @@
 </head>
 <body>
 
-<!-- Grunge: ruwe, harde randen (drempel-effect), de letters zelf worden niet vervormd -->
+<!-- Grunge: ruwe randen, mild genoeg dat dunne letters leesbaar blijven.
+     Het filtergebied is vast en ruim (userSpaceOnUse), zodat er niets wordt afgesneden. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <filter id="grunge" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-    <feGaussianBlur in="SourceAlpha" stdDeviation="0.7" result="soft"/>
+  <filter id="grunge" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1077" height="712"
+          color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="soft"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="5" result="noise"/>
     <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0" result="noiseA"/>
-    <feComposite in="soft" in2="noiseA" operator="arithmetic" k1="0" k2="1" k3="0.55" k4="-0.3" result="mix"/>
+    <feComposite in="soft" in2="noiseA" operator="arithmetic" k1="0" k2="1" k3="0.4" k4="-0.12" result="mix"/>
     <feComponentTransfer in="mix" result="hard">
-      <feFuncA type="discrete" tableValues="0 0 1 1"/>
+      <feFuncA type="discrete" tableValues="0 1"/>
     </feComponentTransfer>
     <feFlood flood-color="#000" result="black"/>
     <feComposite in="black" in2="hard" operator="in"/>
@@ -109,8 +117,9 @@
   <div class="viewport">
     <div class="stage" id="stage">
 
+      <nav class="nav" id="nav" aria-label="Pagina's"></nav>
+
       <div class="layer ink" id="ink">
-        <nav class="nav" id="nav"></nav>
         <div class="rule" style="top:46px"></div>
 
         <div class="tag bold">Auto gespot</div>
@@ -141,6 +150,7 @@
   /* =====================================================
      PAGINA'S  –  pas hier de teksten aan
      <b>...</b> = vet, <span>...</span> = licht (alleen footer)
+     brand = het blauwe woord
      ===================================================== */
   const PAGES = [
     {
@@ -180,7 +190,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = 0, scale = 1, ticking = false;
 
-  // Nummers bovenaan opbouwen
+  // Nummers in de header opbouwen
   nav.innerHTML = PAGES.map((p, i) => `<a href="#${p.no}" data-i="${i}">${p.no}</a>`).join('');
   const links = [...nav.querySelectorAll('a')];
 
@@ -188,16 +198,19 @@
     current = (i + PAGES.length) % PAGES.length;
     const p = PAGES[current];
 
-    $('no').textContent = 'No. ' + p.no;
-    $('head').innerHTML  = p.head;
-    $('type').innerHTML  = p.type;
-    $('trait').innerHTML = p.trait;
-    $('trip').textContent = p.trip;
-    $('foot1').innerHTML = p.foot1;
+    $('no').textContent    = 'No. ' + p.no;
+    $('head').innerHTML    = p.head;
+    $('type').innerHTML    = p.type;
+    $('trait').innerHTML   = p.trait;
+    $('trip').textContent  = p.trip;
+    $('foot1').innerHTML   = p.foot1;
     $('foot2').textContent = p.foot2;
-    blue.textContent = p.brand;
+    blue.textContent       = p.brand;
 
-    links.forEach((a, n) => a.classList.toggle('on', n === current));
+    links.forEach((a, n) => {
+      a.classList.toggle('on', n === current);
+      if (n === current) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
 
     if (animate && !reduce) {
       [ink, blue].forEach(el => { el.classList.remove('flick'); void el.offsetWidth; el.classList.add('flick'); });
@@ -206,15 +219,9 @@
     update();
   }
 
-  // Klikken op nummers (via hash, werkt ook met de terug-knop)
-  function fromHash() {
-    const i = PAGES.findIndex(p => '#' + p.no === location.hash);
-    show(i === -1 ? 0 : i, false);
-  }
-  addEventListener('hashchange', () => {
-    const i = PAGES.findIndex(p => '#' + p.no === location.hash);
-    if (i !== -1) show(i);
-  });
+  // Klikken op een nummer = hash wisselen (werkt ook met de terug-knop van de browser)
+  function indexFromHash() { return PAGES.findIndex(p => '#' + p.no === location.hash); }
+  addEventListener('hashchange', () => { const i = indexFromHash(); if (i !== -1) show(i); });
 
   // Pijltjestoetsen
   addEventListener('keydown', e => {
@@ -233,15 +240,17 @@
     ticking = false;
     if (reduce) return;
     const y = scrollY / scale;
-    ink.style.transform  = `translate3d(0, ${-y * 0.12}px, 0)`;
-    blue.style.transform = `translate3d(0, ${ y * 0.55}px, 0)`;
+    const black = `translate3d(0, ${-y * 0.12}px, 0)`;
+    ink.style.transform  = black;
+    nav.style.transform  = black;
+    blue.style.transform = `translate3d(0, ${y * 0.55}px, 0)`;
   }
 
   addEventListener('resize', fit);
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
 
   fit();
-  fromHash();
+  show(Math.max(0, indexFromHash()), false);
 </script>
 </body>
 </html>
