@@ -17,7 +17,7 @@
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
       padding: 3vw;
-      min-height: 150vh;
+      min-height: 160vh; /* Zorgt voor voldoende scrollruimte */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -26,35 +26,26 @@
       position: relative;
     }
 
-    /* Container voor correcte blending-isolatie */
-    .blend-container {
-      isolation: isolate;
-      position: relative;
-      width: 100%;
-    }
-
     /* SVG Filter voor inkt-uitloop en stempelranden */
     .stamp-grunge {
       filter: url(#stamp-bleed);
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Felblauwe TOYOTA met interactieve blend */
+    /* Felblauwe TOYOTA op exact de schaal van het screenshot */
     .brand-overlay {
       position: absolute;
-      top: 15vh;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 18vh;
+      right: 2vw; /* Uitgelijnd naar rechts zoals op de afbeelding */
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(8rem, 26vw, 32rem);
+      font-size: clamp(5rem, 14vw, 16rem); /* Precieze grootte conform screenshot */
       font-weight: 900;
-      color: #0000ff; /* Extreem fel blauw */
-      /* Screen / Difference zorgt dat blauw de zwarte tekst overschrijft en beïnvloedt */
+      color: #0000ff; /* Knalblauw */
       mix-blend-mode: screen; 
       pointer-events: none;
       z-index: 15;
       white-space: nowrap;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
       line-height: 0.8;
       will-change: transform;
     }
@@ -157,7 +148,7 @@
     </filter>
   </svg>
 
-  <!-- Felblauwe Parallax Laag met 'screen' blend -->
+  <!-- Felblauwe Parallax Laag -->
   <div class="brand-overlay" id="brandText">TOYOTA</div>
 
   <!-- Menu bovenaan -->
@@ -193,19 +184,22 @@
   </main>
 
   <!-- Footer -->
-  <footer class="stamp-grunge">
-    <span class="w-bold">DENEMARKEN TRIP</span>
-    <div class="punchline w-heavy">
-      JE ZIET MAAR WAT <span class="w-thin">MAKE-UP</span> KAN DOEN.
+  <footer>
+    <div class="stamp-grunge" style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end;">
+      <span class="w-bold">DENEMARKEN TRIP</span>
+      <div class="punchline w-heavy">
+        JE ZIET MAAR WAT <span class="w-thin">MAKE-UP</span> KAN DOEN.
+      </div>
     </div>
   </footer>
 
-  <!-- Parallax Scroll Script -->
+  <!-- Strakke Verticale Scroll Script -->
   <script>
     const brandText = document.getElementById('brandText');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
-      brandText.style.transform = `translate(calc(-50% + ${scrolled * 0.15}px), ${scrolled * 0.4}px)`;
+      // Beweegt uitsluitend verticaal (Y-as) tegen een rustige vertraging
+      brandText.style.transform = `translateY(${scrolled * 0.35}px)`;
     });
   </script>
 
