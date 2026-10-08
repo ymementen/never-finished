@@ -17,7 +17,7 @@
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
       padding: 3vw;
-      min-height: 160vh; /* Zorgt voor voldoende scrollruimte */
+      min-height: 160vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -26,22 +26,22 @@
       position: relative;
     }
 
-    /* SVG Filter voor inkt-uitloop en stempelranden */
+    /* SVG Filter voor stempel- & inkt-effect */
     .stamp-grunge {
       filter: url(#stamp-bleed);
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Felblauwe TOYOTA op exact de schaal van het screenshot */
+    /* Felblauwe TOYOTA: lager gepositioneerd, groter, en blendt met zwarte tekst */
     .brand-overlay {
       position: absolute;
-      top: 18vh;
-      right: 2vw; /* Uitgelijnd naar rechts zoals op de afbeelding */
+      top: 26vh; /* Lager geplaatst */
+      right: 1.5vw;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(5rem, 14vw, 16rem); /* Precieze grootte conform screenshot */
+      font-size: clamp(6.5rem, 18vw, 21rem); /* Iets groter gemaakt */
       font-weight: 900;
-      color: #0000ff; /* Knalblauw */
-      mix-blend-mode: screen; 
+      color: #0000ff; /* Feller, puur blauw */
+      mix-blend-mode: difference; /* Zorgt dat het blauw blijft op rood, maar verandert/blendt op het zwart */
       pointer-events: none;
       z-index: 15;
       white-space: nowrap;
@@ -148,7 +148,7 @@
     </filter>
   </svg>
 
-  <!-- Felblauwe Parallax Laag -->
+  <!-- Felblauwe Parallax Overlay -->
   <div class="brand-overlay" id="brandText">TOYOTA</div>
 
   <!-- Menu bovenaan -->
@@ -193,12 +193,11 @@
     </div>
   </footer>
 
-  <!-- Strakke Verticale Scroll Script -->
+  <!-- Verticaal Parallax Scroll Script -->
   <script>
     const brandText = document.getElementById('brandText');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
-      // Beweegt uitsluitend verticaal (Y-as) tegen een rustige vertraging
       brandText.style.transform = `translateY(${scrolled * 0.35}px)`;
     });
   </script>
