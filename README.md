@@ -16,7 +16,7 @@
       color: #050505;
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
-      padding: 3vw; /* Strikte stramien-padding */
+      padding: 3vw;
       min-height: 160vh;
       display: flex;
       flex-direction: column;
@@ -26,18 +26,13 @@
       position: relative;
     }
 
+    /* Stempel & inkt bleed filter */
     .stamp-grunge {
       filter: url(#stamp-bleed);
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Container voor strakke positionering binnen de 3vw marges */
-    .content-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    /* NAV & HEADER */
+    /* Navigatiemenu */
     nav {
       display: flex;
       justify-content: space-between;
@@ -57,91 +52,97 @@
 
     .nav-item.active { opacity: 1; }
 
+    /* Kop-informatie */
     .header-info {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       font-size: clamp(1.4rem, 3.2vw, 2.8rem);
       line-height: 1;
       position: relative;
       z-index: 20;
     }
 
-    /* HOOFDTEKST */
-    .main-content {
-      margin: 6vh 0;
-      display: flex;
-      flex-direction: column;
-      gap: 6vh;
+    /* Hoofdinhoud & Grid */
+    .main-wrapper {
       position: relative;
+      margin: 6vh 0;
       z-index: 5;
     }
 
     .statement {
       font-size: clamp(1.8rem, 4.2vw, 3.8rem);
       line-height: 1.05;
-      max-width: 82%;
+      max-width: 85%;
+      position: relative;
+      z-index: 2;
     }
 
     .grid-data {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: clamp(1.2rem, 2.8vw, 2.2rem);
       border-top: 2px dashed #050505;
       border-bottom: 2px dashed #050505;
       padding: 1.2rem 0;
+      margin-top: 6vh;
+      position: relative;
+      z-index: 2;
     }
 
-    /* TOYOTA - EXACT OP HET RASTER (RECHTS LIGNEND BINNEN MARGES) */
+    /* TOYOTA: Exact op de coördinaten en schaal van het screenshot */
     .brand-overlay {
       position: absolute;
-      right: 0; /* Ligt strak tegen de rechter binnenmarge (3vw van body) */
-      top: 1.5vh;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(7rem, 20vw, 24rem);
-      font-weight: 900;
-      color: #0000ff; /* Knalblauw */
+      /* Begint op de hoogte van 'DEZE WEEK HEB IK EEN' */
+      top: -1vw; 
+      /* Rechterkant uitgelijnd op de binnenmarge van de body (3vw) */
+      right: 0; 
+      width: 62%; /* Beslaat exact de rechterhelft van het tekstblok */
+      height: auto;
       pointer-events: none;
       z-index: 10;
-      white-space: nowrap;
-      letter-spacing: -0.05em;
-      line-height: 0.75;
       will-change: transform;
     }
 
-    /* DUBBELE LAAG VOOR HET BLEND/LIGHTEN EFFECT OP ZWART */
-    .brand-overlay::after {
-      content: "TOYOTA";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: #7b7bff; /* Lichter blauw op de plekken die overlappen */
-      mix-blend-mode: lighten;
+    .brand-overlay text {
+      font-family: 'Helvetica Neue', 'Arial Black', sans-serif;
+      font-weight: 900;
+      font-size: 138px;
+      letter-spacing: -3px;
+      fill: #0000ff; /* Zuiver felblauw */
+      mix-blend-mode: screen; /* Zorgt voor het exacte oplichtende effect op de zwarte tekst */
     }
 
-    /* FONT WEIGHTS */
+    /* Typografie druktes */
     .w-thin { font-weight: 100; letter-spacing: 0.05em; }
     .w-light { font-weight: 300; }
     .w-regular { font-weight: 400; }
     .w-bold { font-weight: 700; }
     .w-heavy { font-weight: 900; letter-spacing: -0.03em; }
 
-    /* FOOTER */
+    /* Footer */
     footer {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      line-height: 1.1;
       border-top: 2px solid #050505;
       padding-top: 1rem;
       position: relative;
       z-index: 20;
     }
 
-    .punchline { text-align: right; max-width: 55%; }
+    .punchline {
+      text-align: right;
+      max-width: 55%;
+    }
   </style>
 </head>
 <body>
 
+  <!-- SVG Stempel Filter -->
   <svg style="position: absolute; width: 0; height: 0;">
     <filter id="stamp-bleed">
       <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="3" result="noise" />
@@ -149,6 +150,7 @@
     </filter>
   </svg>
 
+  <!-- Navigatiemenu -->
   <nav class="stamp-grunge">
     <a class="nav-item active w-heavy">01</a>
     <a class="nav-item w-light">02</a>
@@ -158,16 +160,21 @@
     <a class="nav-item w-light">06</a>
   </nav>
 
+  <!-- Kop-informatie -->
   <header class="header-info stamp-grunge">
     <span class="w-heavy">AUTO GESPOT</span>
     <span class="w-thin">NO. 01</span>
   </header>
 
-  <div class="content-wrapper">
-    <!-- TOYOTA: binnen de 3vw marges gepositioneerd -->
-    <div class="brand-overlay" id="brandText">TOYOTA</div>
+  <!-- Middenstuk met geïntegreerde TOYOTA overlay -->
+  <div class="main-wrapper">
+    
+    <!-- TOYOTA Vector Overlay -->
+    <svg class="brand-overlay" id="brandText" viewBox="0 0 600 150" preserveAspectRatio="xMaxYMin meet">
+      <text x="600" y="115" text-anchor="end">TOYOTA</text>
+    </svg>
 
-    <main class="main-content stamp-grunge">
+    <main class="stamp-grunge">
       <div class="statement">
         <span class="w-regular">DEZE WEEK HEB IK EEN</span> 
         <span class="w-heavy">AUTO</span> 
@@ -183,6 +190,7 @@
     </main>
   </div>
 
+  <!-- Footer -->
   <footer class="stamp-grunge">
     <span class="w-bold">DENEMARKEN TRIP</span>
     <div class="punchline w-heavy">
@@ -190,12 +198,13 @@
     </div>
   </footer>
 
+  <!-- Strakke Verticale Parallax -->
   <script>
     const brandText = document.getElementById('brandText');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
-      // Strakke verticale parallax
-      brandText.style.transform = `translateY(${scrolled * 0.3}px)`;
+      /* Beweegt uitsluitend verticaal mee binnen het stramien */
+      brandText.style.transform = `translateY(${scrolled * 0.35}px)`;
     });
   </script>
 
