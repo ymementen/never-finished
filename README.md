@@ -14,16 +14,16 @@
     body {
       background-color: #ff0000;
       color: #050505;
-      /* Typewriter/stamp uitstraling */
       font-family: 'Courier New', Courier, 'Lucida Console', monospace;
       text-transform: uppercase;
       padding: 3vw;
-      min-height: 100vh;
+      min-height: 150vh; /* Extra hoogte om het parallax scroll-effect voelbaar te maken */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       letter-spacing: -0.01em;
       overflow-x: hidden;
+      position: relative;
     }
 
     /* SVG Filter voor inkt-uitloop, korrel en vervaagde stempelranden */
@@ -32,7 +32,27 @@
       text-shadow: 0 0 1px rgba(5, 5, 5, 0.6);
     }
 
-    /* Dynamische inkt-druktes (weights) */
+    /* Gigantische Felblauwe Parallax Overlapping */
+    .brand-overlay {
+      position: absolute;
+      top: 18vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(8rem, 26vw, 32rem);
+      font-weight: 900;
+      color: #0000ff; /* Felblauw */
+      mix-blend-mode: multiply; /* Blendt rauw met de rode achtergrond en zwarte tekst */
+      pointer-events: none;
+      z-index: 10;
+      white-space: nowrap;
+      letter-spacing: -0.05em;
+      line-height: 0.8;
+      opacity: 0.95;
+      will-change: transform;
+    }
+
+    /* Dynamische inkt-druktes */
     .w-thin { font-weight: 100; letter-spacing: 0.05em; }
     .w-light { font-weight: 300; }
     .w-regular { font-weight: 400; }
@@ -46,6 +66,8 @@
       border-bottom: 2px solid #050505;
       padding-bottom: 0.8rem;
       margin-bottom: 2rem;
+      position: relative;
+      z-index: 20;
     }
 
     .nav-item {
@@ -70,18 +92,23 @@
       align-items: flex-start;
       font-size: clamp(1.4rem, 3.2vw, 2.8rem);
       line-height: 1;
+      position: relative;
+      z-index: 20;
     }
 
     .main-content {
-      margin: 5vh 0;
+      margin: 8vh 0;
       display: flex;
       flex-direction: column;
-      gap: 4vh;
+      gap: 6vh;
+      position: relative;
+      z-index: 5;
     }
 
     .statement {
       font-size: clamp(1.8rem, 4.2vw, 3.8rem);
       line-height: 1.05;
+      max-width: 90%;
     }
 
     .grid-data {
@@ -103,6 +130,8 @@
       line-height: 1.1;
       border-top: 2px solid #050505;
       padding-top: 1rem;
+      position: relative;
+      z-index: 20;
     }
 
     .punchline {
@@ -120,6 +149,9 @@
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
     </filter>
   </svg>
+
+  <!-- Felblauwe Parallax Laag -->
+  <div class="brand-overlay" id="brandText">TOYOTA</div>
 
   <!-- Menu bovenaan -->
   <nav class="stamp-grunge">
@@ -160,6 +192,16 @@
       JE ZIET MAAR WAT <span class="w-thin">MAKE-UP</span> KAN DOEN.
     </div>
   </footer>
+
+  <!-- Parallax Scroll Script -->
+  <script>
+    const brandText = document.getElementById('brandText');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      // Beweegt sneller en verschuift horizontaal tijdens het scrollen
+      brandText.style.transform = `translate(calc(-50% + ${scrolled * 0.15}px), ${scrolled * 0.4}px)`;
+    });
+  </script>
 
 </body>
 </html>
