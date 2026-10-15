@@ -61,24 +61,18 @@
   #overlay a span{color:var(--black);font-family:'Archivo',sans-serif;font-size:calc(24 * var(--u));margin-right:calc(18 * var(--u))}
 
   /* ---------- LAGEN ----------
-     Magenta staat VAST (blijft plakken tijdens het scrollen).
-     Zwarte tekst scrolt mee en gebruikt mix-blend-mode: difference met dezelfde
-     kleur als de achtergrond (#ff0000): rood op rood = zwart, rood op magenta = blauw. */
-  .hero{position:relative;width:100%;height:calc(768 * var(--u));overflow:hidden}
-  .hero svg.layer-black{position:absolute;top:0;left:0;width:100%;height:100%;display:block;
-    z-index:3;mix-blend-mode:difference}
-  .layer-magenta{position:fixed;top:0;left:0;width:100vw;height:calc(768 * var(--u));
-    z-index:1;pointer-events:none;display:block}
-
-  /* ---------- EXTRA SECTIES (menu 01 - 08) ---------- */
-  .slide{position:relative;height:calc(768 * var(--u));padding:calc(150 * var(--u)) calc(64 * var(--u)) 0;overflow:hidden}
-  .slide .num{
-    font-family:'Anton',Impact,sans-serif;color:#ff0000;mix-blend-mode:difference;position:relative;z-index:3;
-    font-size:calc(520 * var(--u));line-height:.9;display:block;margin-top:calc(60 * var(--u));
-    letter-spacing:-.01em
-  }
-  .slide .tag{position:absolute;left:calc(64 * var(--u));bottom:calc(48 * var(--u));
-    font-size:calc(32 * var(--u));letter-spacing:-.04em;color:#ff0000;mix-blend-mode:difference;z-index:3}
+     z1  magenta (vast)            z3  rode vormen + difference = zwart, blauw over magenta
+     z4  foto's (parallax)         z5  magenta (vast) met multiply = blend met de foto's */
+  .page{position:relative;width:100%;height:calc(1405 * var(--u));overflow:hidden}
+  .page svg.layer-black{position:absolute;top:0;left:0;width:100%;height:100%;display:block;z-index:3;mix-blend-mode:difference}
+  .layer-magenta{position:fixed;top:0;left:0;width:100vw;height:calc(768 * var(--u));pointer-events:none;display:block}
+  #mag1{z-index:1}
+  #mag2{z-index:5;mix-blend-mode:multiply}
+  .frame{position:absolute;left:calc(822 * var(--u));top:calc(642 * var(--u));width:calc(500 * var(--u));height:calc(345 * var(--u));
+    background:#ff0000;mix-blend-mode:difference;z-index:3;will-change:transform}
+  .photo{position:absolute;display:block;z-index:4;will-change:transform;object-fit:cover}
+  #fiat{left:calc(840 * var(--u));top:calc(660 * var(--u));width:calc(464 * var(--u));height:calc(310 * var(--u))}
+  #pontiac{left:calc(49 * var(--u));top:calc(933 * var(--u));width:calc(821 * var(--u));height:calc(387 * var(--u));z-index:6}
 </style>
 </head>
 <body>
@@ -87,38 +81,40 @@
   <button class="nav-item" id="burger" aria-label="Menu" aria-expanded="false">
     <span class="bars"><i></i><i></i><i></i></span><span>NR</span>
   </button>
-  <a class="nav-item" id="n1" href="#s1">01</a>
-  <a class="nav-item" id="n2" href="#s2">02</a>
-  <a class="nav-item" id="n3" href="#s3">03</a>
-  <a class="nav-item" id="n4" href="#s4">04</a>
-  <a class="nav-item" id="n5" href="#s5">05</a>
-  <a class="nav-item" id="n6" href="#s6">06</a>
-  <a class="nav-item" id="n7" href="#s7">07</a>
-  <a class="nav-item" id="n8" href="#s8">08</a>
+  <a class="nav-item" id="n1" href="#" data-i="1">01</a>
+  <a class="nav-item" id="n2" href="#" data-i="2">02</a>
+  <a class="nav-item" id="n3" href="#" data-i="3">03</a>
+  <a class="nav-item" id="n4" href="#" data-i="4">04</a>
+  <a class="nav-item" id="n5" href="#" data-i="5">05</a>
+  <a class="nav-item" id="n6" href="#" data-i="6">06</a>
+  <a class="nav-item" id="n7" href="#" data-i="7">07</a>
+  <a class="nav-item" id="n8" href="#" data-i="8">08</a>
 </header>
 
 <nav id="overlay" aria-label="Hoofdmenu">
-  <a href="#s1"><span>01</span>Car of the week</a>
-  <a href="#s2"><span>02</span>Car of the week</a>
-  <a href="#s3"><span>03</span>Car of the week</a>
-  <a href="#s4"><span>04</span>Car of the week</a>
-  <a href="#s5"><span>05</span>Car of the week</a>
-  <a href="#s6"><span>06</span>Car of the week</a>
-  <a href="#s7"><span>07</span>Car of the week</a>
-  <a href="#s8"><span>08</span>Car of the week</a>
+  <a href="#" data-i="1"><span>01</span>Car of the week</a>
+  <a href="#" data-i="2"><span>02</span>Car of the week</a>
+  <a href="#" data-i="3"><span>03</span>Car of the week</a>
+  <a href="#" data-i="4"><span>04</span>Car of the week</a>
+  <a href="#" data-i="5"><span>05</span>Car of the week</a>
+  <a href="#" data-i="6"><span>06</span>Car of the week</a>
+  <a href="#" data-i="7"><span>07</span>Car of the week</a>
+  <a href="#" data-i="8"><span>08</span>Car of the week</a>
 </nav>
 
-<!-- Magenta: vast, blijft staan tijdens het scrollen -->
-<svg class="layer-magenta" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <g fill="#ff00ff" font-family="Anton, Impact, 'Arial Narrow', sans-serif">
-    <text x="132" y="435" font-size="305" textLength="1260" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
+<!-- Magenta: vast (onder) en vast met multiply (boven de foto's) -->
+<svg class="layer-magenta" id="mag1" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><g id="mag" fill="#ff00ff" font-family="Anton, Impact, 'Arial Narrow', sans-serif">
+    <text x="132" y="495" font-size="305" textLength="1260" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
     <text x="48" y="720" font-size="136" textLength="822" lengthAdjust="spacingAndGlyphs">NEW FREAK. EVERY WEEK.</text>
-  </g>
+  </g></defs>
+  <use href="#mag"/>
 </svg>
+<svg class="layer-magenta" id="mag2" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#mag"/></svg>
 
-<section class="hero" id="top">
-  <!-- Zwart (rood + difference): scrolt mee en wordt blauw over de vaste magenta letters -->
-  <svg class="layer-black" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<main class="page" id="top">
+  <!-- Zwart (rood + difference): scrolt mee, wordt blauw over de vaste magenta letters -->
+  <svg class="layer-black" viewBox="0 0 1366 1405" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
       <text x="45" y="305" font-size="178" font-weight="800" textLength="1190" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
       <text x="48" y="508" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
@@ -126,39 +122,48 @@
       <text x="48" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
     </g>
   </svg>
-</section>
 
-<section class="slide" id="s1"><span class="num">01</span><span class="tag">NR 01</span></section>
-<section class="slide" id="s2"><span class="num">02</span><span class="tag">NR 02</span></section>
-<section class="slide" id="s3"><span class="num">03</span><span class="tag">NR 03</span></section>
-<section class="slide" id="s4"><span class="num">04</span><span class="tag">NR 04</span></section>
-<section class="slide" id="s5"><span class="num">05</span><span class="tag">NR 05</span></section>
-<section class="slide" id="s6"><span class="num">06</span><span class="tag">NR 06</span></section>
-<section class="slide" id="s7"><span class="num">07</span><span class="tag">NR 07</span></section>
-<section class="slide" id="s8"><span class="num">08</span><span class="tag">NR 08</span></section>
+  <div class="frame" data-speed="-0.06"></div>
+  <img class="photo" id="fiat" data-speed="-0.06" src="fiat-multiple.jpg" alt="Fiat Multiple">
+  <img class="photo" id="pontiac" data-speed="-0.12" src="pontiac-aztek.jpg" alt="Pontiac Aztek">
+  <svg class="layer-black" style="pointer-events:none" viewBox="0 0 1366 1405" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
+      <text class="cap" data-speed="-0.06" x="1132" y="1048" font-size="38" textLength="182" lengthAdjust="spacingAndGlyphs">Fiat Multiple</text>
+      <text class="cap" data-speed="-0.12" x="899" y="1318" font-size="38" textLength="211" lengthAdjust="spacingAndGlyphs">Pontiac Aztek</text>
+    </g>
+  </svg>
+</main>
 
 <script>
   const burger = document.getElementById('burger');
-  const setMenu = open => {
-    document.body.classList.toggle('menu-open', open);
-    burger.setAttribute('aria-expanded', open);
-  };
+  const setMenu = open => { document.body.classList.toggle('menu-open', open); burger.setAttribute('aria-expanded', open); };
   burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
-  document.querySelectorAll('#overlay a').forEach(a => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
-  // Actief menu-item tijdens het scrollen
+  // Menu 01-08: scrolt naar het juiste deel van de ene pagina
   const links = [...document.querySelectorAll('header a.nav-item')];
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + en.target.id));
-      }
+  const maxScroll = () => document.documentElement.scrollHeight - innerHeight;
+  document.querySelectorAll('[data-i]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); setMenu(false);
+    scrollTo({ top: (a.dataset.i - 1) / 7 * maxScroll(), behavior: 'smooth' });
+  }));
+
+  // Parallax: foto's bewegen iets anders dan de tekst; magenta blijft staan
+  const moving = [...document.querySelectorAll('[data-speed]')];
+  const u = () => innerWidth / 1366;
+  function update() {
+    const y = scrollY;
+    moving.forEach(el => {
+      const d = y * el.dataset.speed;
+      el.style.transform = el instanceof SVGElement ? `translate(0px, ${d / u()}px)` : `translateY(${d}px)`;
     });
-  }, { rootMargin: '-45% 0px -45% 0px' });
-  document.querySelectorAll('.slide').forEach(s => io.observe(s));
-  new IntersectionObserver(([e]) => { if (e.isIntersecting) links.forEach(l => l.classList.remove('active')); },
-    { rootMargin: '-45% 0px -45% 0px' }).observe(document.getElementById('top'));
+    const m = maxScroll();
+    const i = m > 0 ? Math.round(y / m * 7) + 1 : 1;
+    links.forEach(l => l.classList.toggle('active', y > 40 && +l.dataset.i === i));
+  }
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
 </script>
 </body>
 </html>
