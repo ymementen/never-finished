@@ -120,10 +120,10 @@
   <!-- Zwart (rood + difference): scrolt mee en wordt blauw over de vaste magenta letters -->
   <svg class="layer-black" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
-      <text x="45" y="305" font-size="178" font-weight="800" textLength="1190" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
-      <text x="48" y="508" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
-      <text x="48" y="550" font-size="34" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
-      <text x="48" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
+      <text x="64" y="305" font-size="178" font-weight="800" textLength="1190" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
+      <text x="64" y="508" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
+      <text x="64" y="550" font-size="34" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
+      <text x="64" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
     </g>
   </svg>
 </section>
