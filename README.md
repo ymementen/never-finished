@@ -10,7 +10,7 @@
 <style>
   :root{
     --red:#ff0000; --black:#000; --blue:#0000ff; --magenta:#ff00ff;
-    --u:calc(100vw / 1366);              /* 1 px uit het ontwerp van 1366 x 768 */
+    --u:calc(min(100vw, 1366px) / 1366);              /* 1 px uit het ontwerp van 1366 x 768 */
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;scroll-padding-top:calc(111 * var(--u))}
@@ -19,31 +19,30 @@
 
   /* ---------- MENU ---------- */
   header{
-    position:fixed;top:0;left:0;width:100%;height:calc(111 * var(--u));
-    background:var(--red);z-index:20;
+    position:fixed;top:0;left:0;width:100%;height:clamp(74px, calc(111 * var(--u)), 111px);
+    background:var(--red);z-index:20;display:flex;align-items:flex-end;
+    padding:clamp(12px, calc(24 * var(--u)), 24px) clamp(16px, calc(64 * var(--u)), 64px);
+    gap:clamp(8px, calc(16 * var(--u)), 16px);
   }
   header::after{content:"";position:absolute;left:calc(64 * var(--u));right:calc(61 * var(--u));
     bottom:calc(0 * var(--u));height:calc(3 * var(--u));min-height:2px;background:var(--black)}
   .nav-item{
-    position:absolute;top:calc(52 * var(--u));font-size:calc(32 * var(--u));line-height:1;
+    position:relative;font-size:clamp(18px, calc(32 * var(--u)), 32px);line-height:1;
     letter-spacing:-.04em;cursor:pointer;background:none;border:0;color:var(--black);
-    font-family:inherit;transition:color .15s;padding:0
+    font-family:inherit;transition:color .15s;padding:0;flex:1 1 0;text-align:center
   }
   .nav-item:hover{color:var(--blue)}
   .nav-item.active{color:var(--magenta)}
   .nav-item.active::after{content:"";position:absolute;left:0;right:0;bottom:calc(-8 * var(--u));height:calc(3 * var(--u));background:var(--magenta)}
-  #burger{left:calc(64 * var(--u));display:flex;align-items:center;gap:calc(8 * var(--u))}
-  #burger .bars{width:calc(36 * var(--u));height:calc(24 * var(--u));position:relative;display:block}
+  #burger{display:flex;align-items:center;gap:clamp(6px, calc(8 * var(--u)), 8px);flex:0 0 auto}
+  #burger .bars{width:clamp(24px, calc(36 * var(--u)), 36px);height:clamp(16px, calc(24 * var(--u)), 24px);position:relative;display:block}
   #burger .bars i{position:absolute;left:0;width:100%;height:calc(3 * var(--u));min-height:2px;background:currentColor;transition:transform .3s,opacity .3s,top .3s}
   #burger .bars i:nth-child(1){top:0}
-  #burger .bars i:nth-child(2){top:calc(10 * var(--u))}
-  #burger .bars i:nth-child(3){top:calc(20 * var(--u))}
-  body.menu-open #burger .bars i:nth-child(1){top:calc(10 * var(--u));transform:rotate(45deg)}
+  #burger .bars i:nth-child(2){top:clamp(6px, calc(10 * var(--u)), 10px)}
+  #burger .bars i:nth-child(3){top:clamp(12px, calc(20 * var(--u)), 20px)}
+  body.menu-open #burger .bars i:nth-child(1){top:clamp(6px, calc(10 * var(--u)), 10px);transform:rotate(45deg)}
   body.menu-open #burger .bars i:nth-child(2){opacity:0}
-  body.menu-open #burger .bars i:nth-child(3){top:calc(10 * var(--u));transform:rotate(-45deg)}
-  #n1{left:calc(211 * var(--u))} #n2{left:calc(353 * var(--u))} #n3{left:calc(504 * var(--u))}
-  #n4{left:calc(657 * var(--u))} #n5{left:calc(806 * var(--u))} #n6{left:calc(958 * var(--u))}
-  #n7{left:calc(1111 * var(--u))} #n8{left:calc(1262 * var(--u))}
+  body.menu-open #burger .bars i:nth-child(3){top:clamp(6px, calc(10 * var(--u)), 10px);transform:rotate(-45deg)}
 
   /* Fullscreen menu */
   #overlay{
@@ -68,11 +67,27 @@
   .layer-magenta{position:fixed;top:0;left:0;width:100vw;height:calc(768 * var(--u));pointer-events:none;display:block}
   #mag1{z-index:1}
   #mag2{z-index:5;mix-blend-mode:multiply}
-  .frame{position:absolute;left:calc(822 * var(--u));top:calc(642 * var(--u));width:calc(500 * var(--u));height:calc(345 * var(--u));
-    background:#ff0000;mix-blend-mode:difference;z-index:3;will-change:transform}
-  .photo{position:absolute;display:block;z-index:4;will-change:transform;object-fit:cover}
-  #fiat{left:calc(840 * var(--u));top:calc(660 * var(--u));width:calc(464 * var(--u));height:calc(310 * var(--u))}
-  #pontiac{left:calc(49 * var(--u));top:calc(933 * var(--u));width:calc(821 * var(--u));height:calc(387 * var(--u));z-index:6}
+  .frame{position:absolute;left:calc(842 * var(--u));top:calc(594 * var(--u));width:calc(466 * var(--u));height:calc(312 * var(--u));
+    border:calc(7 * var(--u)) solid var(--black);z-index:4;will-change:transform}
+  .photo{position:absolute;display:block;z-index:5;will-change:transform;object-fit:cover}
+  #fiat{left:calc(851 * var(--u));top:calc(603 * var(--u));width:calc(448 * var(--u));height:calc(294 * var(--u))}
+  #pontiac{left:calc(70 * var(--u));top:calc(914 * var(--u));width:calc(792 * var(--u));height:calc(372 * var(--u));z-index:7}
+
+  @media (max-width: 900px){
+    header{padding:14px 12px 12px}
+    header::after{left:12px;right:12px}
+    .nav-item{font-size:16px}
+    #overlay{padding:120px 18px 40px}
+    #overlay a{font-size:42px}
+    #overlay a span{font-size:18px}
+  }
+
+  @media (max-width: 680px){
+    header{overflow-x:auto;scrollbar-width:none}
+    header::-webkit-scrollbar{display:none}
+    .nav-item{flex:0 0 auto;min-width:44px}
+    .page{height:calc(1760 * var(--u))}
+  }
 </style>
 </head>
 <body>
@@ -105,8 +120,8 @@
 <!-- Magenta: vast (onder) en vast met multiply (boven de foto's) -->
 <svg class="layer-magenta" id="mag1" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs><g id="mag" fill="#ff00ff" font-family="Anton, Impact, 'Arial Narrow', sans-serif">
-    <text x="132" y="495" font-size="305" textLength="1260" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
-    <text x="48" y="720" font-size="136" textLength="822" lengthAdjust="spacingAndGlyphs">NEW FREAK. EVERY WEEK.</text>
+    <text x="176" y="446" font-size="296" textLength="1148" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
+    <text x="52" y="678" font-size="132" textLength="980" lengthAdjust="spacingAndGlyphs">NEW FREAK. EVERY WEEK.</text>
   </g></defs>
   <use href="#mag"/>
 </svg>
@@ -116,10 +131,10 @@
   <!-- Zwart (rood + difference): scrolt mee, wordt blauw over de vaste magenta letters -->
   <svg class="layer-black" viewBox="0 0 1366 1405" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
-      <text x="45" y="305" font-size="178" font-weight="800" textLength="1190" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
-      <text x="48" y="508" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
-      <text x="48" y="550" font-size="34" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
-      <text x="48" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
+      <text x="50" y="287" font-size="176" font-weight="800" textLength="1178" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
+      <text x="52" y="500" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
+      <text x="52" y="544" font-size="34" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
+      <text x="52" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
     </g>
   </svg>
 
@@ -128,8 +143,8 @@
   <img class="photo" id="pontiac" data-speed="-0.12" src="pontiac-aztek.jpg" alt="Pontiac Aztek">
   <svg class="layer-black" style="pointer-events:none" viewBox="0 0 1366 1405" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
-      <text class="cap" data-speed="-0.06" x="1132" y="1048" font-size="38" textLength="182" lengthAdjust="spacingAndGlyphs">Fiat Multiple</text>
-      <text class="cap" data-speed="-0.12" x="899" y="1318" font-size="38" textLength="211" lengthAdjust="spacingAndGlyphs">Pontiac Aztek</text>
+      <text class="cap" data-speed="-0.06" x="1138" y="940" font-size="38" textLength="182" lengthAdjust="spacingAndGlyphs">Fiat Multiple</text>
+      <text class="cap" data-speed="-0.12" x="882" y="1298" font-size="38" textLength="211" lengthAdjust="spacingAndGlyphs">Pontiac Aztek</text>
     </g>
   </svg>
 </main>
