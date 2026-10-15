@@ -11,6 +11,7 @@
   :root{
     --red:#ff0000; --black:#000; --blue:#0000ff; --magenta:#ff00ff;
     --u:calc(100vw / 1366);              /* 1 px uit het ontwerp van 1366 x 768 */
+    --black-shift:calc(192 * var(--u));
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;scroll-padding-top:calc(111 * var(--u))}
@@ -67,6 +68,7 @@
   .hero{position:relative;width:100%;height:calc(768 * var(--u));overflow:hidden}
   .hero svg.layer-black{position:absolute;top:0;left:0;width:100%;height:100%;display:block;
     z-index:3;mix-blend-mode:difference}
+  .hero svg.layer-black g{transform:translateX(calc(-1 * var(--black-shift)))}
   .layer-magenta{position:fixed;top:0;left:0;width:100vw;height:calc(768 * var(--u));
     z-index:1;pointer-events:none;display:block}
 
@@ -75,10 +77,11 @@
   .slide .num{
     font-family:'Anton',Impact,sans-serif;color:#ff0000;mix-blend-mode:difference;position:relative;z-index:3;
     font-size:calc(520 * var(--u));line-height:.9;display:block;margin-top:calc(60 * var(--u));
-    letter-spacing:-.01em
+    letter-spacing:-.01em;transform:translateX(calc(-1 * var(--black-shift)))
   }
   .slide .tag{position:absolute;left:calc(64 * var(--u));bottom:calc(48 * var(--u));
-    font-size:calc(32 * var(--u));letter-spacing:-.04em;color:#ff0000;mix-blend-mode:difference;z-index:3}
+    font-size:calc(32 * var(--u));letter-spacing:-.04em;color:#ff0000;mix-blend-mode:difference;z-index:3;
+    transform:translateX(calc(-1 * var(--black-shift)))}
 </style>
 </head>
 <body>
