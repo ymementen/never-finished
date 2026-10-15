@@ -119,7 +119,7 @@
 <section class="hero" id="top">
   <!-- Zwart (rood + difference): scrolt mee en wordt blauw over de vaste magenta letters -->
   <svg class="layer-black" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
+    <g transform="translate(-200 0)" fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
       <text x="12" y="320" font-size="230" font-weight="800" textLength="1360" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
       <text x="12" y="515" font-size="40" textLength="560" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
       <text x="12" y="560" font-size="40" textLength="720" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
