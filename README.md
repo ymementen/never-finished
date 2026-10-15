@@ -19,14 +19,14 @@
 
   /* ---------- MENU ---------- */
   header{
-    position:fixed;top:0;left:0;width:100%;height:calc(111 * var(--u));
+    position:fixed;top:0;left:0;width:100%;height:calc(102 * var(--u));
     background:var(--red);z-index:20;
   }
   header::after{content:"";position:absolute;left:calc(64 * var(--u));right:calc(61 * var(--u));
     bottom:calc(0 * var(--u));height:calc(3 * var(--u));min-height:2px;background:var(--black)}
   .nav-item{
-    position:absolute;top:calc(52 * var(--u));font-size:calc(32 * var(--u));line-height:1;
-    letter-spacing:-.04em;cursor:pointer;background:none;border:0;color:var(--black);
+    position:absolute;top:calc(45 * var(--u));font-size:calc(30 * var(--u));line-height:1;
+    letter-spacing:-.03em;cursor:pointer;background:none;border:0;color:var(--black);
     font-family:inherit;transition:color .15s;padding:0
   }
   .nav-item:hover{color:var(--blue)}
@@ -111,8 +111,8 @@
 <!-- Magenta: vast, blijft staan tijdens het scrollen -->
 <svg class="layer-magenta" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <g fill="#ff00ff" font-family="Anton, Impact, 'Arial Narrow', sans-serif">
-    <text x="132" y="435" font-size="305" textLength="1260" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
-    <text x="48" y="720" font-size="136" textLength="822" lengthAdjust="spacingAndGlyphs">NEW FREAK. EVERY WEEK.</text>
+    <text x="128" y="452" font-size="294" textLength="1242" lengthAdjust="spacingAndGlyphs">“UGLY / WEIRD”</text>
+    <text x="48" y="724" font-size="118" textLength="822" lengthAdjust="spacingAndGlyphs">NEW FREAK. EVERY WEEK.</text>
   </g>
 </svg>
 
@@ -120,10 +120,9 @@
   <!-- Zwart (rood + difference): scrolt mee en wordt blauw over de vaste magenta letters -->
   <svg class="layer-black" viewBox="0 0 1366 768" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <g fill="#ff0000" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif">
-      <text x="45" y="305" font-size="178" font-weight="800" textLength="1190" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
-      <text x="48" y="508" font-size="34" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
-      <text x="48" y="550" font-size="34" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
-      <text x="48" y="638" font-size="34" textLength="304" lengthAdjust="spacingAndGlyphs">Ugly is the new sexy.</text>
+      <text x="42" y="292" font-size="224" font-weight="800" textLength="1272" lengthAdjust="spacingAndGlyphs">CAR OF THE WEEK</text>
+      <text x="48" y="520" font-size="32" textLength="482" lengthAdjust="spacingAndGlyphs">One car. Zero taste. Every week.</text>
+      <text x="48" y="560" font-size="32" textLength="630" lengthAdjust="spacingAndGlyphs">Because bad taste deserves the spotlight.</text>
     </g>
   </svg>
 </section>
