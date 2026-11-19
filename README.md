@@ -3,15 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAR OF THE WEEK — UGLY / WEIRD</title>
+  <title>UGLY// WEIRD CARS of the week</title>
   <style>
-    :root {
-      --bg-red: #FF1200;
-      --ink-black: #0A0A0A;
-      /* Puur blauw met 'screen' blend-mode op rood (#FF1200) geeft exact de neon magenta/blauwe overlap uit je ontwerp */
-      --blend-blue: #002BFF; 
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -19,300 +12,208 @@
     }
 
     body {
-      background-color: var(--bg-red);
-      color: var(--ink-black);
+      background-color: #FF0000;
+      color: #FF00FF;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      padding: 4vw 5vw;
       overflow-x: hidden;
-      /* Zorgt voor genoeg hoogte zodat je op 16:9 door de poster heen kunt scrollen */
-      min-height: 210vh; 
-    }
-
-    /* --- TOP NAVIGATIE --- */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background-color: var(--bg-red);
-      padding: 1.8vw 3vw 0 3vw;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--ink-black);
-      padding-bottom: 0.8vw;
-      font-size: clamp(14px, 1.35vw, 24px);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 0.8vw;
-    }
-
-    .hamburger {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      width: 1.3vw;
-      min-width: 18px;
-      cursor: pointer;
+      justify-content: flex-start;
     }
 
-    .hamburger span {
-      display: block;
-      height: 2px;
-      width: 100%;
-      background-color: var(--ink-black);
-    }
-
-    .nav-numbers {
+    /* Hamburger menu linksboven */
+    .menu-btn {
+      width: 65px;
+      height: 44px;
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      width: 82%;
+      cursor: pointer;
+      margin-bottom: 5vh;
+      background: none;
+      border: none;
+      padding: 0;
     }
 
-    .nav-numbers a {
-      color: var(--ink-black);
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-
-    .nav-numbers a:hover {
-      opacity: 0.5;
-    }
-
-    /* --- POSTER / CANVAS CONTAINER --- */
-    .poster-wrapper {
-      position: relative;
+    .menu-btn span {
+      display: block;
       width: 100%;
-      padding: 4vw 3vw 10vw 3vw;
+      height: 11px;
+      background-color: #000000;
     }
 
-    /* --- TYPOGRAFIE LAGEN --- */
-    /* Laag 1: Zwarte tekst (scrolt normaal met de pagina mee) */
-    .title-black {
-      position: relative;
-      z-index: 2;
-      font-size: 9.2vw;
+    /* Hoofdtypografie */
+    .hero-title {
       font-weight: 700;
-      line-height: 0.88;
-      letter-spacing: -0.045em;
-      text-transform: uppercase;
-      color: var(--ink-black);
+      font-size: clamp(3.5rem, 11.8vw, 13rem);
+      line-height: 0.94;
+      letter-spacing: -0.025em;
       user-select: none;
     }
 
-    /* Laag 2: Blauwe tekst die blendt en op andere snelheid scrolt */
-    .blend-layer {
-      color: var(--blend-blue);
-      mix-blend-mode: screen;
-      will-change: transform;
-      pointer-events: none;
-    }
-
-    .title-ugly {
-      position: relative;
-      z-index: 4;
-      font-size: 13.8vw;
-      font-weight: 700;
-      line-height: 0.82;
-      letter-spacing: -0.055em;
-      text-transform: uppercase;
-      margin-top: -1.8vw;
-      margin-left: 4.5vw;
-      /* Horizontaal iets samengedrukt zoals in je ontwerp */
-      transform: scaleY(1.22);
-      transform-origin: top left;
-    }
-
-    /* Subkoppen links */
-    .manifesto {
-      position: relative;
-      z-index: 5;
-      margin-top: 3.5vw;
-      font-size: clamp(16px, 1.55vw, 28px);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-      max-width: 45vw;
-    }
-
-    .manifesto p + p {
-      margin-top: 2.2vw;
-    }
-
-    /* Tweede grote blend-titel */
-    .title-freak {
-      position: relative;
-      z-index: 6;
-      font-size: 6.4vw;
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: -0.05em;
-      text-transform: uppercase;
-      margin-top: 3.5vw;
-      transform: scaleY(1.35);
-      transform-origin: top left;
-    }
-
-    /* --- AUTO KAARTEN & FOTO'S --- */
-    /* Fiat Multipla (Rechts) */
-    .car-multipla {
-      position: relative;
-      z-index: 3; /* Zit onder de blauwe 'NEW FREAK' tekst zodat de tekst eroverheen blendt */
-      width: 39vw;
-      margin-left: auto;
-      margin-top: -7vw;
-    }
-
-    .car-multipla .img-frame {
-      border: 0.65vw solid var(--ink-black);
-      background: var(--ink-black);
-      overflow: hidden;
-    }
-
-    .car-multipla img {
+    .line {
       display: block;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
     }
 
-    .caption-right {
-      text-align: right;
-      font-size: clamp(16px, 1.6vw, 30px);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      margin-top: 0.8vw;
-    }
-
-    /* Pontiac Aztek (Linksonder) */
-    .car-aztek {
-      position: relative;
-      z-index: 3;
-      width: 60vw;
-      margin-top: -2vw;
+    /* Derde regel met het wiel als de 'o' van 'of' */
+    .line-bottom {
       display: flex;
-      align-items: flex-end;
-      gap: 1.8vw;
+      align-items: center;
+      margin-top: 0.05em;
+      padding-left: 7vw; /* Lijnt het wiel uit zoals op je ontwerp */
     }
 
-    .car-aztek img {
-      display: block;
+    .wheel-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.15em;
+      height: 1.15em;
+      margin-right: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .spinning-wheel {
       width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
+      height: 100%;
+      display: block;
+      transform-origin: 50% 50%;
+      animation: spin 4s linear infinite;
     }
 
-    .caption-bottom {
-      font-size: clamp(16px, 1.6vw, 30px);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      padding-bottom: 0.2vw;
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
-    /* Mobiele weergave (optioneel voor kleinere schermen) */
-    @media (max-width: 768px) {
-      body { min-height: 140vh; }
-      .manifesto { max-width: 90vw; margin-top: 6vw; }
-      .car-multipla { width: 75vw; margin-top: 4vw; }
-      .car-aztek { width: 90vw; flex-direction: column; align-items: flex-start; margin-top: 8vw; }
+    /* Simpele overlay voor als je op het menu klikt */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: #000000;
+      color: #FF00FF;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5vw;
+      z-index: 100;
+    }
+
+    .nav-overlay.active {
+      display: flex;
+    }
+
+    .nav-overlay a {
+      color: #FF00FF;
+      text-decoration: none;
+      font-size: clamp(2rem, 6vw, 5rem);
+      font-weight: 700;
+      margin: 0.2em 0;
+    }
+
+    .nav-overlay a:hover {
+      color: #FF0000;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 4vw;
+      left: 5vw;
+      background: none;
+      border: none;
+      color: #FF00FF;
+      font-size: 3rem;
+      font-weight: 700;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <nav>
-      <div class="nav-left">
-        <div class="hamburger" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <span>NR</span>
-      </div>
-      <div class="nav-numbers">
-        <a href="#01">01</a>
-        <a href="#02">02</a>
-        <a href="#03">03</a>
-        <a href="#04">04</a>
-        <a href="#05">05</a>
-        <a href="#06">06</a>
-        <a href="#07">07</a>
-        <a href="#08">08</a>
-      </div>
-    </nav>
-  </header>
+  <!-- Hamburger Menu -->
+  <button class="menu-btn" aria-label="Open menu" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
-  <main class="poster-wrapper">
-    <!-- Zwarte tekst: scrolt op normale snelheid (1x) -->
-    <h1 class="title-black">CAR OF THE WEEK</h1>
+  <!-- Hoofdtekst -->
+  <main>
+    <h1 class="hero-title">
+      <span class="line">UGLY// WEIRD</span>
+      <span class="line">CARS</span>
+      <span class="line line-bottom">
+        <span class="wheel-wrapper">
+          <!-- SVG Wiel met 5 spaken -->
+          <svg class="spinning-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="tireGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="72%" stop-color="#1a1a1a"/>
+                <stop offset="86%" stop-color="#333333"/>
+                <stop offset="96%" stop-color="#111111"/>
+                <stop offset="100%" stop-color="#050505"/>
+              </radialGradient>
+              <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="45%" stop-color="#cccccc"/>
+                <stop offset="75%" stop-color="#888888"/>
+                <stop offset="100%" stop-color="#e0e0e0"/>
+              </linearGradient>
+            </defs>
 
-    <!-- Blauwe/Magenta tekst: scrolt sneller/trager en blendt met zwart -->
-    <div class="title-ugly blend-layer" data-parallax="-0.22" data-scale-y="1.22">
-      “UGLY / WEIRD”
-    </div>
+            <!-- Band -->
+            <circle cx="100" cy="100" r="98" fill="url(#tireGrad)" />
+            <!-- Profiel-ring -->
+            <circle cx="100" cy="100" r="92" fill="none" stroke="#262626" stroke-width="3" stroke-dasharray="6 4"/>
+            
+            <!-- Buitenrand velg -->
+            <circle cx="100" cy="100" r="72" fill="#222222" stroke="url(#rimGrad)" stroke-width="6"/>
+            <circle cx="100" cy="100" r="66" fill="#181818"/>
 
-    <div class="manifesto">
-      <p>
-        One car. Zero taste. Every week.<br>
-        Because bad taste deserves the spotlight.
-      </p>
-      <p>Ugly is the new sexy.</p>
-    </div>
+            <!-- 5 Spaken -->
+            <g fill="url(#rimGrad)" stroke="#777777" stroke-width="1">
+              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(0 100 100)"/>
+              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(72 100 100)"/>
+              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(144 100 100)"/>
+              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(216 100 100)"/>
+              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(288 100 100)"/>
+            </g>
 
-    <div class="title-freak blend-layer" data-parallax="-0.14" data-scale-y="1.35">
-      NEW FREAK. EVERY WEEK.
-    </div>
+            <!-- Naaf / Middenstuk -->
+            <circle cx="100" cy="100" r="24" fill="url(#rimGrad)" stroke="#666666" stroke-width="2"/>
+            <circle cx="100" cy="100" r="10" fill="#b0b0b0" stroke="#555555" stroke-width="1.5"/>
 
-    <!-- Auto 1: Fiat Multipla -->
-    <section class="car-multipla" id="01">
-      <div class="img-frame">
-        <!-- Vervang src door jouw bestandsnaam in GitHub -->
-        <img src="multipla.jpg" alt="Groene Fiat Multipla">
-      </div>
-      <p class="caption-right">Fiat Multiple</p>
-    </section>
-
-    <!-- Auto 2: Pontiac Aztek -->
-    <section class="car-aztek" id="02">
-      <!-- Vervang src door jouw bestandsnaam in GitHub -->
-      <img src="aztek.jpg" alt="Beige Pontiac Aztek op het strand">
-      <p class="caption-bottom">Pontiac Aztek</p>
-    </section>
+            <!-- 5 Wielbouten (rood/donker zoals in het voorbeeld) -->
+            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(0 100 100)"/>
+            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(72 100 100)"/>
+            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(144 100 100)"/>
+            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(216 100 100)"/>
+            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(288 100 100)"/>
+          </svg>
+        </span>
+        <span>f the week</span>
+      </span>
+    </h1>
   </main>
 
+  <!-- Uitklapmenu -->
+  <nav class="nav-overlay" id="navOverlay">
+    <button class="close-btn" onclick="toggleMenu()">✕</button>
+    <a href="#week">THIS WEEK'S PICK</a>
+    <a href="#archive">ARCHIVE</a>
+    <a href="#submit">SUBMIT A CAR</a>
+  </nav>
+
   <script>
-    // Zorgt ervoor dat de blauwe tekst onafhankelijk beweegt tijdens het scrollen
-    const parallaxElements = document.querySelectorAll('.blend-layer');
-
-    function updateParallax() {
-      const scrollY = window.scrollY;
-
-      parallaxElements.forEach(el => {
-        const speed = parseFloat(el.getAttribute('data-parallax')) || 0;
-        const scaleY = parseFloat(el.getAttribute('data-scale-y')) || 1;
-        const yOffset = scrollY * speed;
-
-        // Behoudt de verticale typografische uitrekking (scaleY) tijdens het verschuiven
-        el.style.transform = `translate3d(0, ${yOffset}px, 0) scaleY(${scaleY})`;
-      });
+    function toggleMenu() {
+      document.getElementById('navOverlay').classList.toggle('active');
     }
-
-    window.addEventListener('scroll', () => {
-      requestAnimationFrame(updateParallax);
-    }, { passive: true });
-
-    // Direct uitvoeren bij laden
-    updateParallax();
   </script>
 
 </body>
