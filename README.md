@@ -50,7 +50,7 @@
 
   .track {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-    display: flex; flex-direction: column; justify-content: space-between;
+    display: flex; flex-direction: column; justify-content: space-around;
   }
   .skid {
     height: var(--bar); width: 0; opacity: 0;
@@ -298,7 +298,7 @@
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
     rows.forEach(function (r) { r.style.fontSize = '100px'; });
-    var W = stage.clientWidth, H = stage.clientHeight;
+    var W = stage.clientWidth * 1.15, H = stage.clientHeight;
     var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
     var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
     rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
