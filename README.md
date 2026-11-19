@@ -8,7 +8,7 @@
     --red: #FF0000;
     --pink: #FF00FF;
     --black: #000000;
-    --m: clamp(16px, 3.2vw, 56px);
+    --m: clamp(12px, 1.4vw, 24px);
     --hh: clamp(30px, 6vh, 64px);
     --bar: calc(var(--hh) * .28);
     --dur: 1s;
@@ -18,7 +18,7 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { height: 100%; }
+  html, body { min-height: 100%; }
   body {
     background: var(--red);
     color: var(--black);
@@ -26,14 +26,22 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    padding: max(var(--m), env(safe-area-inset-top)) var(--m) max(var(--m), env(safe-area-inset-bottom));
+    min-height: 100dvh;
+    padding: max(0px, env(safe-area-inset-top)) max(0px, env(safe-area-inset-right)) max(0px, env(safe-area-inset-bottom)) max(0px, env(safe-area-inset-left));
     user-select: none;
     -webkit-user-select: none;
   }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
   /* ───────── HUD ───────── */
-  .hud { position: relative; height: var(--hh); flex: none; display: flex; align-items: center; }
+  .hud {
+    position: relative;
+    height: var(--hh);
+    flex: none;
+    display: flex;
+    align-items: center;
+    padding-inline: var(--m);
+  }
 
   .track {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none;
@@ -95,7 +103,7 @@
 
   /* ───────── Typografie ───────── */
   .stage {
-    flex: 1; min-height: 0; margin-top: clamp(12px, 3vh, 36px);
+    flex: 1; min-height: 0; width: 100%; margin-top: clamp(8px, 1.5vh, 16px);
     display: flex; flex-direction: column; justify-content: space-between;
   }
   .row { display: flex; font-size: 100px; }
