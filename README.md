@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
@@ -24,10 +24,10 @@
     /* Zwart hamburger menu linksboven */
     .menu-btn {
       position: absolute;
-      top: 5.3vh;
+      top: 5.2vh;
       left: 5.4vw;
       width: 5.6vw;
-      height: 5.9vh;
+      height: 6vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -44,38 +44,38 @@
       background-color: #000000;
     }
 
-    /* Tekst-stijl: vult het volledige scherm in exacte verhoudingen */
+    /* Tekst-stijl: vult het scherm van links tot rechts */
     .txt {
       position: absolute;
       color: #FF00FF;
       font-weight: 700;
-      font-size: 21.8vh;
+      font-size: 24.5vh;
       line-height: 1;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.02em;
       white-space: nowrap;
-      transform: scaleX(0.95);
+      transform: scaleY(1.14);
       transform-origin: top left;
     }
 
     /* Regel 1: UGLY// WEIRD */
     .line-1 {
-      top: 18vh;
+      top: 17vh;
       left: 5.1vw;
     }
 
     /* Regel 2: CARS */
     .line-2 {
-      top: 43vh;
+      top: 42.5vh;
       left: 5.1vw;
     }
 
     /* Wiel op de plek van de 'o' */
     .wheel-box {
       position: absolute;
-      top: 67.3vh;
+      top: 66.8vh;
       left: 11.9vw;
-      width: 30vh;
-      height: 30vh;
+      width: 31.5vh;
+      height: 31.5vh;
     }
 
     .wheel-spin {
@@ -88,8 +88,8 @@
 
     /* Regel 3: f the week */
     .line-3 {
-      top: 69.5vh;
-      left: 29.3vw;
+      top: 68.5vh;
+      left: 29.2vw;
     }
 
     @keyframes spin {
@@ -126,15 +126,11 @@
         </linearGradient>
       </defs>
 
-      <!-- Band -->
       <circle cx="100" cy="100" r="99" fill="url(#tire)" />
       <circle cx="100" cy="100" r="93" fill="none" stroke="#2a2a2a" stroke-width="3.5" stroke-dasharray="5 3"/>
-
-      <!-- Velg -->
       <circle cx="100" cy="100" r="71" fill="#1c1c1c" stroke="url(#rim)" stroke-width="6"/>
       <circle cx="100" cy="100" r="65" fill="#141414"/>
 
-      <!-- 5 Spaken -->
       <g fill="url(#rim)" stroke="#707070" stroke-width="1">
         <polygon points="90,100 110,100 114,34 86,34" transform="rotate(0 100 100)"/>
         <polygon points="90,100 110,100 114,34 86,34" transform="rotate(72 100 100)"/>
@@ -143,11 +139,9 @@
         <polygon points="90,100 110,100 114,34 86,34" transform="rotate(288 100 100)"/>
       </g>
 
-      <!-- Naaf -->
       <circle cx="100" cy="100" r="24" fill="url(#rim)" stroke="#666666" stroke-width="1.5"/>
       <circle cx="100" cy="100" r="9.5" fill="#b8b8b8" stroke="#555555" stroke-width="1.5"/>
 
-      <!-- 5 Rode bouten -->
       <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(0 100 100)"/>
       <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(72 100 100)"/>
       <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(144 100 100)"/>
