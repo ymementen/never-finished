@@ -298,7 +298,7 @@
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
     rows.forEach(function (r) { r.style.fontSize = '100px'; });
-    var W = stage.clientWidth * 1.15, H = stage.clientHeight;
+    var W = Math.max(stage.clientWidth, window.innerWidth * .94), H = stage.clientHeight;
     var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
     var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
     rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
