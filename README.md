@@ -43,6 +43,8 @@
     flex: none;
     display: flex;
     align-items: center;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     padding-inline: var(--m);
   }
 
@@ -106,10 +108,15 @@
 
   /* ───────── Typografie ───────── */
   .stage {
-    flex: 1; min-height: 0; width: 100%; margin-top: clamp(8px, 1.5vh, 16px);
+    flex: 1;
+    min-height: 0;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: clamp(8px, 1.5vh, 16px);
+    padding-inline: var(--m);
     display: flex; flex-direction: column; justify-content: space-between;
   }
-  .row { display: flex; font-size: 100px; }
+  .row { display: flex; width: 100%; font-size: 100px; }
   .ink {
     display: inline-block; white-space: nowrap;
     color: var(--pink); font-weight: 700; line-height: .82; letter-spacing: -.045em;
@@ -294,7 +301,7 @@
     var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
     rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
     rows[2].style.fontSize = s3 + 'px';
-    var total = rows.reduce(function (a, r) { return a + r.offsetHeight; }, 0);
+    var total = [rows[0], rows[2]].reduce(function (a, r) { return a + r.offsetHeight; }, 0);
     var k = Math.min(1, H * .97 / total);
     if (k < 1) {
       rows[0].style.fontSize = rows[1].style.fontSize = s1 * k + 'px';
