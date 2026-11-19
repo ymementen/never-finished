@@ -8,7 +8,7 @@
     --red: #FF0000;
     --pink: #FF00FF;
     --black: #000000;
-    --m: clamp(12px, 1.4vw, 24px);
+    --m: clamp(16px, 3.2vw, 56px);
     --hh: clamp(30px, 6vh, 64px);
     --bar: calc(var(--hh) * .28);
     --dur: 1s;
@@ -18,7 +18,7 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { min-height: 100%; }
+  html, body { height: 100%; }
   body {
     background: var(--red);
     color: var(--black);
@@ -26,34 +26,18 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    position: relative;
-    width: 100vw;
-    max-width: none;
-    margin-left: calc(50% - 50vw);
-    min-height: 100dvh;
-    padding: max(0px, env(safe-area-inset-top)) max(0px, env(safe-area-inset-right)) max(0px, env(safe-area-inset-bottom)) max(0px, env(safe-area-inset-left));
+    padding: max(var(--m), env(safe-area-inset-top)) var(--m) max(var(--m), env(safe-area-inset-bottom));
     user-select: none;
     -webkit-user-select: none;
   }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
   /* ───────── HUD ───────── */
-  .hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: var(--hh);
-    flex: none;
-    display: flex;
-    align-items: center;
-    width: 100vw;
-    margin-left: 0;
-    padding: 5.3vh 5.3vw 0;
-  }
+  .hud { position: relative; height: var(--hh); flex: none; display: flex; align-items: center; }
 
   .track {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-    display: flex; flex-direction: column; justify-content: space-around;
+    display: flex; flex-direction: column; justify-content: space-between;
   }
   .skid {
     height: var(--bar); width: 0; opacity: 0;
@@ -111,36 +95,23 @@
 
   /* ───────── Typografie ───────── */
   .stage {
-    position: absolute;
-    inset: 0;
-    width: 100vw;
-    height: 100dvh;
-    margin: 0;
-    padding: 0;
+    flex: 1; min-height: 0; margin-top: clamp(12px, 3vh, 36px);
+    display: flex; flex-direction: column; justify-content: space-between;
   }
-  .row { position: absolute; display: flex; width: auto; font-size: 12.4vw; }
-  .r1 { left: 5.5vw; top: 19vh; }
-  .r2 { left: 5.5vw; top: 44vh; }
-  .r3 { left: 5.0vw; top: 70vh; }
-  .r1 .blk + .blk { margin-left: .30em; }
-  .r3 .ink { white-space: nowrap; }
+  .row { display: flex; font-size: 100px; }
   .ink {
     display: inline-block; white-space: nowrap;
     color: var(--pink); font-weight: 700; line-height: .82; letter-spacing: -.045em;
     margin-left: -.04em;
-    transform: scaleY(1.35);
-    transform-origin: left top;
   }
   .blk { display: inline; }
   .r2 { align-items: flex-end; justify-content: space-between; gap: 3vw; }
 
   /* ───────── Auto-info (rechtsonder bij CARS) ───────── */
   .meta {
-    display: none;
     width: min(34vw, 560px); font-size: 16px; color: var(--black);
     border-top: 2px solid var(--black); padding-top: .9em; padding-bottom: .1em;
   }
-  body.menu-open .meta { display: block; }
   .meta-top { display: flex; justify-content: space-between; font-size: clamp(12px, 1vw, 16px); font-weight: 700; margin-bottom: 1.4em; }
   .mask { display: block; overflow: hidden; padding-bottom: .12em; }
   .name { font-size: clamp(24px, 2.7vw, 52px); font-weight: 700; letter-spacing: -.03em; line-height: 1.05; will-change: transform; }
@@ -306,7 +277,18 @@
 
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
-    rows.forEach(function (r) { r.style.fontSize = ''; });
+    rows.forEach(function (r) { r.style.fontSize = '100px'; });
+    var W = stage.clientWidth, H = stage.clientHeight;
+    var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
+    var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
+    rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
+    rows[2].style.fontSize = s3 + 'px';
+    var total = rows.reduce(function (a, r) { return a + r.offsetHeight; }, 0);
+    var k = Math.min(1, H * .97 / total);
+    if (k < 1) {
+      rows[0].style.fontSize = rows[1].style.fontSize = s1 * k + 'px';
+      rows[2].style.fontSize = s3 * k + 'px';
+    }
   }
   fit();
   addEventListener('resize', fit);
@@ -343,9 +325,9 @@
     i = (i + CARS.length) % CARS.length;
     cur = i;
     nums.forEach(function (n, k) { n.classList.toggle('active', false); });
-    void navEl.offsetWidth;                     // animatie opnieuw laten starten
+    void navEl.offsetWidth;
     nums[i].classList.add('active');
-    rate = Math.max(rate, 14);                  // wiel geeft gas
+    rate = Math.max(rate, 14);
     if (reduce) { setText(i); return; }
     els.forEach(function (e) { e.style.transition = 'transform .3s cubic-bezier(.6,0,.9,.45)'; e.style.transform = 'translateY(110%)'; });
     setTimeout(function () {
@@ -377,8 +359,6 @@
 
   function start() {
     ready = true;
-    document.body.classList.add('menu-open');
-    fit();
     if (reduce) document.body.classList.add('still');
     show(0);
   }
