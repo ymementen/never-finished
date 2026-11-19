@@ -26,6 +26,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    position: relative;
     width: 100vw;
     max-width: none;
     margin-left: calc(50% - 50vw);
@@ -38,14 +39,16 @@
 
   /* ───────── HUD ───────── */
   .hud {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     height: var(--hh);
     flex: none;
     display: flex;
     align-items: center;
     width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding-inline: var(--m);
+    margin-left: 0;
+    padding: 5.3vh 5.3vw 0;
   }
 
   .track {
@@ -108,13 +111,15 @@
 
   /* ───────── Typografie ───────── */
   .stage {
-    flex: 1;
-    min-height: 0;
+    position: absolute;
+    inset: 0;
     width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-top: clamp(8px, 1.5vh, 16px);
-    padding-inline: var(--m);
-    display: flex; flex-direction: column; justify-content: space-between;
+    height: 100dvh;
+    margin: 0;
+    padding: 20vh 5.3vw 7vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .row { display: flex; width: 100%; font-size: 100px; }
   .ink {
@@ -298,7 +303,7 @@
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
     rows.forEach(function (r) { r.style.fontSize = '100px'; });
-    var W = Math.max(stage.clientWidth, window.innerWidth * .94), H = stage.clientHeight;
+    var W = window.innerWidth * .86, H = stage.clientHeight;
     var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
     var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
     rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
