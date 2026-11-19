@@ -13,66 +13,90 @@
 
     body {
       background-color: #FF0000;
-      color: #FF00FF;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       min-height: 100vh;
-      padding: 4vw 5vw;
-      overflow-x: hidden;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: center;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow: hidden;
     }
 
-    /* Hamburger menu linksboven */
+    /* Exact 16:9 canvas dat meeschaalt met het scherm zonder verhoudingen te breken */
+    .canvas-16-9 {
+      width: 100vw;
+      height: 56.25vw; /* 16:9 verhouding */
+      max-height: 100vh;
+      max-width: 177.78vh; /* 16:9 verhouding */
+      background-color: #FF0000;
+      position: relative;
+      container-type: inline-size;
+      user-select: none;
+    }
+
+    /* Zwart hamburger menu exact op positie */
     .menu-btn {
-      width: 65px;
-      height: 44px;
+      position: absolute;
+      top: 5.2%;
+      left: 5.4%;
+      width: 5.6cqw;
+      height: 5.8cqw;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      cursor: pointer;
-      margin-bottom: 5vh;
       background: none;
       border: none;
       padding: 0;
+      cursor: pointer;
     }
 
     .menu-btn span {
       display: block;
       width: 100%;
-      height: 11px;
+      height: 1.55cqw;
       background-color: #000000;
     }
 
-    /* Hoofdtypografie */
-    .hero-title {
+    /* Typografie exact uitgelijnd */
+    .text-layer {
+      color: #FF00FF;
       font-weight: 700;
-      font-size: clamp(3.5rem, 11.8vw, 13rem);
-      line-height: 0.94;
       letter-spacing: -0.025em;
-      user-select: none;
     }
 
-    .line {
-      display: block;
+    /* Regel 1: UGLY// WEIRD */
+    .line-1 {
+      position: absolute;
+      top: 17.5%;
+      left: 5.1%;
+      font-size: 12.1cqw;
+      line-height: 1;
+      white-space: nowrap;
+      transform: scaleY(1.12);
+      transform-origin: top left;
     }
 
-    /* Derde regel met het wiel als de 'o' van 'of' */
-    .line-bottom {
+    /* Regel 2: CARS */
+    .line-2 {
+      position: absolute;
+      top: 42.5%;
+      left: 5.1%;
+      font-size: 12.1cqw;
+      line-height: 1;
+      white-space: nowrap;
+      transform: scaleY(1.12);
+      transform-origin: top left;
+    }
+
+    /* Wiel op de exacte plek van de 'o' */
+    .wheel-container {
+      position: absolute;
+      top: 67.2%;
+      left: 11.9%;
+      width: 16.8cqw;
+      height: 16.8cqw;
       display: flex;
       align-items: center;
-      margin-top: 0.05em;
-      padding-left: 7vw; /* Lijnt het wiel uit zoals op je ontwerp */
-    }
-
-    .wheel-wrapper {
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
-      width: 1.15em;
-      height: 1.15em;
-      margin-right: 0.04em;
-      flex-shrink: 0;
     }
 
     .spinning-wheel {
@@ -83,6 +107,18 @@
       animation: spin 4s linear infinite;
     }
 
+    /* Regel 3: f the week */
+    .line-3 {
+      position: absolute;
+      top: 69.2%;
+      left: 29.3%;
+      font-size: 12.1cqw;
+      line-height: 1;
+      white-space: nowrap;
+      transform: scaleY(1.12);
+      transform-origin: top left;
+    }
+
     @keyframes spin {
       from {
         transform: rotate(0deg);
@@ -91,130 +127,75 @@
         transform: rotate(360deg);
       }
     }
-
-    /* Simpele overlay voor als je op het menu klikt */
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      background-color: #000000;
-      color: #FF00FF;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5vw;
-      z-index: 100;
-    }
-
-    .nav-overlay.active {
-      display: flex;
-    }
-
-    .nav-overlay a {
-      color: #FF00FF;
-      text-decoration: none;
-      font-size: clamp(2rem, 6vw, 5rem);
-      font-weight: 700;
-      margin: 0.2em 0;
-    }
-
-    .nav-overlay a:hover {
-      color: #FF0000;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 4vw;
-      left: 5vw;
-      background: none;
-      border: none;
-      color: #FF00FF;
-      font-size: 3rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Hamburger Menu -->
-  <button class="menu-btn" aria-label="Open menu" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <div class="canvas-16-9">
+    <!-- Hamburger Menu -->
+    <button class="menu-btn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <!-- Hoofdtekst -->
-  <main>
-    <h1 class="hero-title">
-      <span class="line">UGLY// WEIRD</span>
-      <span class="line">CARS</span>
-      <span class="line line-bottom">
-        <span class="wheel-wrapper">
-          <!-- SVG Wiel met 5 spaken -->
-          <svg class="spinning-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="tireGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="72%" stop-color="#1a1a1a"/>
-                <stop offset="86%" stop-color="#333333"/>
-                <stop offset="96%" stop-color="#111111"/>
-                <stop offset="100%" stop-color="#050505"/>
-              </radialGradient>
-              <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ffffff"/>
-                <stop offset="45%" stop-color="#cccccc"/>
-                <stop offset="75%" stop-color="#888888"/>
-                <stop offset="100%" stop-color="#e0e0e0"/>
-              </linearGradient>
-            </defs>
+    <!-- Exacte tekstlagen -->
+    <div class="text-layer">
+      <div class="line-1">UGLY// WEIRD</div>
+      <div class="line-2">CARS</div>
+      
+      <!-- Draaiend wiel -->
+      <div class="wheel-container">
+        <svg class="spinning-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="tireGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="70%" stop-color="#191919"/>
+              <stop offset="84%" stop-color="#383838"/>
+              <stop offset="94%" stop-color="#141414"/>
+              <stop offset="100%" stop-color="#080808"/>
+            </radialGradient>
+            <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="40%" stop-color="#d4d4d4"/>
+              <stop offset="75%" stop-color="#8c8c8c"/>
+              <stop offset="100%" stop-color="#e6e6e6"/>
+            </linearGradient>
+          </defs>
 
-            <!-- Band -->
-            <circle cx="100" cy="100" r="98" fill="url(#tireGrad)" />
-            <!-- Profiel-ring -->
-            <circle cx="100" cy="100" r="92" fill="none" stroke="#262626" stroke-width="3" stroke-dasharray="6 4"/>
-            
-            <!-- Buitenrand velg -->
-            <circle cx="100" cy="100" r="72" fill="#222222" stroke="url(#rimGrad)" stroke-width="6"/>
-            <circle cx="100" cy="100" r="66" fill="#181818"/>
+          <!-- Zwarte autoband -->
+          <circle cx="100" cy="100" r="99" fill="url(#tireGrad)" />
+          <!-- Profielring -->
+          <circle cx="100" cy="100" r="93" fill="none" stroke="#2a2a2a" stroke-width="3.5" stroke-dasharray="5 3"/>
+          
+          <!-- Velgrand -->
+          <circle cx="100" cy="100" r="71" fill="#1c1c1c" stroke="url(#rimGrad)" stroke-width="6"/>
+          <circle cx="100" cy="100" r="65" fill="#141414"/>
 
-            <!-- 5 Spaken -->
-            <g fill="url(#rimGrad)" stroke="#777777" stroke-width="1">
-              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(0 100 100)"/>
-              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(72 100 100)"/>
-              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(144 100 100)"/>
-              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(216 100 100)"/>
-              <polygon points="91,100 109,100 113,34 87,34" transform="rotate(288 100 100)"/>
-            </g>
+          <!-- 5 Spaken -->
+          <g fill="url(#rimGrad)" stroke="#707070" stroke-width="1">
+            <polygon points="90,100 110,100 114,34 86,34" transform="rotate(0 100 100)"/>
+            <polygon points="90,100 110,100 114,34 86,34" transform="rotate(72 100 100)"/>
+            <polygon points="90,100 110,100 114,34 86,34" transform="rotate(144 100 100)"/>
+            <polygon points="90,100 110,100 114,34 86,34" transform="rotate(216 100 100)"/>
+            <polygon points="90,100 110,100 114,34 86,34" transform="rotate(288 100 100)"/>
+          </g>
 
-            <!-- Naaf / Middenstuk -->
-            <circle cx="100" cy="100" r="24" fill="url(#rimGrad)" stroke="#666666" stroke-width="2"/>
-            <circle cx="100" cy="100" r="10" fill="#b0b0b0" stroke="#555555" stroke-width="1.5"/>
+          <!-- Middenstuk / Naaf -->
+          <circle cx="100" cy="100" r="24" fill="url(#rimGrad)" stroke="#666666" stroke-width="1.5"/>
+          <circle cx="100" cy="100" r="9.5" fill="#b8b8b8" stroke="#555555" stroke-width="1.5"/>
 
-            <!-- 5 Wielbouten (rood/donker zoals in het voorbeeld) -->
-            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(0 100 100)"/>
-            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(72 100 100)"/>
-            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(144 100 100)"/>
-            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(216 100 100)"/>
-            <circle cx="100" cy="83" r="3" fill="#FF0000" transform="rotate(288 100 100)"/>
-          </svg>
-        </span>
-        <span>f the week</span>
-      </span>
-    </h1>
-  </main>
+          <!-- 5 Rode boutgaten zoals in het voorbeeld -->
+          <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(0 100 100)"/>
+          <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(72 100 100)"/>
+          <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(144 100 100)"/>
+          <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(216 100 100)"/>
+          <circle cx="100" cy="83.5" r="2.8" fill="#FF0000" transform="rotate(288 100 100)"/>
+        </svg>
+      </div>
 
-  <!-- Uitklapmenu -->
-  <nav class="nav-overlay" id="navOverlay">
-    <button class="close-btn" onclick="toggleMenu()">✕</button>
-    <a href="#week">THIS WEEK'S PICK</a>
-    <a href="#archive">ARCHIVE</a>
-    <a href="#submit">SUBMIT A CAR</a>
-  </nav>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById('navOverlay').classList.toggle('active');
-    }
-  </script>
+      <div class="line-3">f the week</div>
+    </div>
+  </div>
 
 </body>
 </html>
