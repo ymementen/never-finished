@@ -127,9 +127,11 @@
 
   /* ───────── Auto-info (rechtsonder bij CARS) ───────── */
   .meta {
+    display: none;
     width: min(34vw, 560px); font-size: 16px; color: var(--black);
     border-top: 2px solid var(--black); padding-top: .9em; padding-bottom: .1em;
   }
+  body.menu-open .meta { display: block; }
   .meta-top { display: flex; justify-content: space-between; font-size: clamp(12px, 1vw, 16px); font-weight: 700; margin-bottom: 1.4em; }
   .mask { display: block; overflow: hidden; padding-bottom: .12em; }
   .name { font-size: clamp(24px, 2.7vw, 52px); font-weight: 700; letter-spacing: -.03em; line-height: 1.05; will-change: transform; }
@@ -377,6 +379,8 @@
 
   function start() {
     ready = true;
+    document.body.classList.add('menu-open');
+    fit();
     if (reduce) document.body.classList.add('still');
     show(0);
   }
