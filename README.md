@@ -120,14 +120,16 @@
   }
   .row { position: absolute; display: flex; width: auto; font-size: 15.5vw; }
   .r1 { left: 5.5vw; top: 17vh; }
-  .r2 { left: 5.5vw; top: 40vh; }
-  .r3 { left: 5.0vw; top: 61vh; }
+  .r2 { left: 5.5vw; top: 38.5vh; }
+  .r3 { left: 5.0vw; top: 60.5vh; }
   .r1 .blk + .blk { margin-left: .24em; }
   .r3 .ink { white-space: nowrap; }
   .ink {
     display: inline-block; white-space: nowrap;
     color: var(--pink); font-weight: 700; line-height: .82; letter-spacing: -.045em;
     margin-left: -.04em;
+    transform: scaleX(1.12);
+    transform-origin: left center;
   }
   .blk { display: inline; }
   .r2 { align-items: flex-end; justify-content: space-between; gap: 3vw; }
