@@ -26,6 +26,9 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
     min-height: 100dvh;
     padding: max(0px, env(safe-area-inset-top)) max(0px, env(safe-area-inset-right)) max(0px, env(safe-area-inset-bottom)) max(0px, env(safe-area-inset-left));
     user-select: none;
