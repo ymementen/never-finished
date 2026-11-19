@@ -116,12 +116,14 @@
     width: 100vw;
     height: 100dvh;
     margin: 0;
-    padding: 20vh 5.3vw 7vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    padding: 0;
   }
-  .row { display: flex; width: 100%; font-size: 100px; }
+  .row { position: absolute; display: flex; width: auto; font-size: 15.5vw; }
+  .r1 { left: 5.5vw; top: 17vh; }
+  .r2 { left: 5.5vw; top: 40vh; }
+  .r3 { left: 5.0vw; top: 61vh; }
+  .r1 .blk + .blk { margin-left: .24em; }
+  .r3 .ink { white-space: nowrap; }
   .ink {
     display: inline-block; white-space: nowrap;
     color: var(--pink); font-weight: 700; line-height: .82; letter-spacing: -.045em;
@@ -302,18 +304,7 @@
 
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
-    rows.forEach(function (r) { r.style.fontSize = '100px'; });
-    var W = window.innerWidth * .86, H = stage.clientHeight;
-    var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
-    var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
-    rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
-    rows[2].style.fontSize = s3 + 'px';
-    var total = rows.reduce(function (a, r) { return a + r.offsetHeight; }, 0);
-    var k = Math.min(1, H * .97 / total);
-    if (k < 1) {
-      rows[0].style.fontSize = rows[1].style.fontSize = s1 * k + 'px';
-      rows[2].style.fontSize = s3 * k + 'px';
-    }
+    rows.forEach(function (r) { r.style.fontSize = ''; });
   }
   fit();
   addEventListener('resize', fit);
