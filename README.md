@@ -296,13 +296,13 @@
   /* ───── tekst vult de breedte en krimpt mee met de hoogte ───── */
   function fit() {
     rows.forEach(function (r) { r.style.fontSize = '100px'; });
-    var W = stage.clientWidth, H = stage.clientHeight;
+    var W = stage.clientWidth * 1.15, H = stage.clientHeight;
     var s1 = 100 * W / $('.ink', rows[0]).getBoundingClientRect().width;
     var s3 = 100 * W / $('.ink', rows[2]).getBoundingClientRect().width;
     rows[0].style.fontSize = rows[1].style.fontSize = s1 + 'px';
     rows[2].style.fontSize = s3 + 'px';
     var total = [rows[0], rows[2]].reduce(function (a, r) { return a + r.offsetHeight; }, 0);
-    var k = Math.min(1, H * .97 / total);
+    var k = Math.min(1, H * .99 / total);
     if (k < 1) {
       rows[0].style.fontSize = rows[1].style.fontSize = s1 * k + 'px';
       rows[2].style.fontSize = s3 * k + 'px';
