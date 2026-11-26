@@ -60,9 +60,9 @@
     display: block;
     height: calc(var(--bw) * .1);
     background:
-      linear-gradient(180deg, #454545 0%, #080808 24%, #151515 70%, #383838 100%),
-      repeating-linear-gradient(115deg, rgba(255,255,255,.5) 0 var(--tread-2, 2px), transparent var(--tread-2, 2px) var(--tread-6, 6px), rgba(0,0,0,.8) var(--tread-8, 8px), transparent var(--tread-8, 8px) var(--tread-12, 12px));
-    background-size: 100% 100%, var(--tread-period, 14px) 100%;
+      repeating-linear-gradient(115deg, rgba(255,255,255,.5) 0 var(--tread-2, 2px), transparent var(--tread-2, 2px) var(--tread-6, 6px), rgba(0,0,0,.8) var(--tread-8, 8px), transparent var(--tread-8, 8px) var(--tread-12, 12px)),
+      linear-gradient(180deg, #454545 0%, #080808 24%, #151515 70%, #383838 100%);
+    background-size: var(--tread-period, 14px) 100%, 100% 100%;
     transform-origin: 0 50%;
     will-change: transform;
   }
