@@ -59,10 +59,16 @@
   .bar {
     display: block;
     height: calc(var(--bw) * .1);
-    background: var(--ink);
+    background:
+      linear-gradient(180deg, #303030 0%, #080808 24%, #171717 70%, #3b3b3b 100%),
+      repeating-linear-gradient(115deg, transparent 0 3px, rgba(255,255,255,.3) 3px 4px, rgba(0,0,0,.4) 4px 6px, transparent 6px 10px);
+    background-size: 100% 100%, 14px 100%;
+    background-blend-mode: multiply, screen;
     transform-origin: 0 50%;
     will-change: transform;
   }
+  .bar:nth-child(2) { opacity: .78; }
+  .bar:nth-child(3) { opacity: .88; }
 
   .menu {
     position: absolute;
