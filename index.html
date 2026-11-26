@@ -32,17 +32,18 @@
     overflow-x: hidden;
   }
 
-  .top {
+  .skid-top {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: var(--head);
+    height: var(--head, max(72px, 8.9vw));
     overflow: hidden;
     z-index: 10;
   }
-  .burger {
+  .skid-burger {
+    --bw: clamp(52px, 8vw, 120px);
     position: absolute;
     top: max(14px, 2vw);
-    left: var(--pad);
+    left: var(--pad, 7.2vw);
     width: var(--bw);
     height: calc(var(--bw) * .5);
     padding: 0;
@@ -52,44 +53,53 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    z-index: 1;
   }
-  .burger::before { content: ""; position: absolute; inset: -14px; }
-  .burger:focus-visible { outline: 3px solid var(--magenta); outline-offset: 8px; }
-
-  .bar {
+  .skid-burger::before { content: ""; position: absolute; inset: -14px; }
+  .skid-burger:focus-visible { outline: 3px solid var(--magenta); outline-offset: 8px; }
+  .skid-bar {
     display: block;
     height: calc(var(--bw) * .1);
-    background:
-      repeating-linear-gradient(115deg, rgba(255,255,255,.5) 0 var(--tread-2, 2px), transparent var(--tread-2, 2px) var(--tread-6, 6px), rgba(0,0,0,.8) var(--tread-8, 8px), transparent var(--tread-8, 8px) var(--tread-12, 12px)),
-      linear-gradient(180deg, #454545 0%, #080808 24%, #151515 70%, #383838 100%);
-    background-size: var(--tread-period, 14px) 100%, 100% 100%;
-    transform-origin: 0 50%;
-    will-change: transform;
+    background: var(--ink, #000);
   }
-  .bar:nth-child(2) { opacity: .78; }
-  .bar:nth-child(3) { opacity: .88; }
+  .skid-burger.is-skidding .skid-bar { visibility: hidden; }
 
-  .menu {
+  .skid-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .skid-menu {
+    --bw: clamp(52px, 8vw, 120px);
+    --rx: 0px;
     position: absolute;
     top: max(14px, 2vw);
-    left: var(--pad);
-    right: var(--pad);
+    left: var(--pad, 7.2vw);
+    width: var(--title-w, 84vw);
     height: calc(var(--bw) * .5);
-    padding-left: calc(var(--bw) * .6);
+    padding-left: calc(var(--bw) * .5);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    clip-path: inset(-50px 100% -50px 0);
+    z-index: 3;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(var(--rx) - 36px), transparent var(--rx));
+    mask-image: linear-gradient(to right, #000 calc(var(--rx) - 36px), transparent var(--rx));
   }
-  .menu a {
-    color: var(--ink);
+  .skid-menu a {
+    font-family: var(--font, inherit);
+    font-weight: 800;
+    color: var(--ink, #000);
     text-decoration: none;
-    font-size: clamp(18px, 4vw, 60px);
+    font-size: clamp(18px, 3.6vw, 54px);
     line-height: 1;
     padding: 6px 0;
   }
-  .menu a:hover { color: var(--magenta); }
-  .menu a:focus-visible { outline: 3px solid var(--magenta); outline-offset: 4px; }
+  .skid-menu a:hover { color: var(--magenta, #f0f); }
+  .skid-menu a:focus-visible { outline: 3px solid var(--magenta, #f0f); outline-offset: 4px; }
 
   .hero {
     position: relative;
@@ -141,19 +151,24 @@
 
   @media (prefers-reduced-motion: reduce) {
     .wheel img { animation: none; }
+    .skid-canvas { display: none; }
+    .skid-menu { opacity: 0; }
+    .skid-top.is-open .skid-menu { opacity: 1; -webkit-mask-image: none; mask-image: none; }
+    .skid-top.is-open .skid-bar { opacity: 0; }
   }
 </style>
 </head>
 
 <body>
 
-<header class="top" id="top">
-  <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">
-    <span class="bar"></span>
-    <span class="bar"></span>
-    <span class="bar"></span>
+<header class="skid-top" id="top">
+  <button class="skid-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+    <span class="skid-bar"></span>
+    <span class="skid-bar"></span>
+    <span class="skid-bar"></span>
   </button>
-  <nav class="menu" id="menu" aria-label="Cars of the week" inert>
+  <canvas class="skid-canvas" aria-hidden="true"></canvas>
+  <nav class="skid-menu" id="menu" aria-label="Cars of the week" inert>
     <a href="#car-1">1.</a>
     <a href="#car-2">2.</a>
     <a href="#car-3">3.</a>
@@ -181,15 +196,21 @@
 <script>
 (() => {
   const root   = document.documentElement;
-  const header = document.getElementById('top');
-  const burger = header.querySelector('.burger');
-  const bars   = [...burger.querySelectorAll('.bar')];
+  const header = document.querySelector('.skid-top');
+  const burger = header.querySelector('.skid-burger');
+  const bars   = [...burger.querySelectorAll('.skid-bar')];
   const menu   = document.getElementById('menu');
-  const lines  = [...document.querySelectorAll('.title .line')];
+  const cv     = header.querySelector('.skid-canvas');
+  const ctx    = cv.getContext('2d');
+  const title  = document.querySelector('.title');
+  const lines  = [...title.querySelectorAll('.line')];
   const tags   = [...document.querySelectorAll('.tag span')];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* 1. Tekst over de volle breedte */
+  const clamp  = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  const rng    = seed => () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
+
   function fitTo(el, target, maxFs) {
     el.style.fontSize = '100px';
     const w = el.getBoundingClientRect().width;
@@ -199,87 +220,239 @@
     return fs;
   }
   function fit() {
-    const vw  = root.clientWidth;
+    const vw = root.clientWidth;
     const pad = parseFloat(getComputedStyle(burger).left);
     const full = vw - 2 * pad;
     const fs1 = fitTo(lines[0], full);
     fitTo(lines[1], full, fs1 * 1.5);
     fitTo(lines[2], full);
     tags.forEach(t => fitTo(t, full));
-    measure();
-    render(p);
+    root.style.setProperty('--title-w', full + 'px');
   }
 
-  /* 2. Hamburger = remspoor */
-  const FAN = [-2.4, 0, 2.4];
-  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  const T_BURN = 300, T_HEAD = 340, T_TAIL_AT = 480, T_TAIL = 330, STAGGER = 14;
+  const TOTAL = T_TAIL_AT + T_TAIL + 2 * STAGGER;
+  const SMOKE_END = T_BURN + 150 + 850;
+  const PATCH = 1.6;
+  let G = null;
 
-  let barW = 1, menuW = 1;
-  let p = 0, target = 0, last = 0, raf = 0, isOpen = false;
+  function bakeTrack(i, { W, H, dpr, x0, bh, ys, pitch, xP, X1 }) {
+    const c = document.createElement('canvas');
+    c.width = Math.round(W * dpr);
+    c.height = Math.round(H * dpr);
+    const g = c.getContext('2d');
+    g.scale(dpr, dpr);
 
-  function measure() {
-    const bl = burger.getBoundingClientRect();
-    const m  = menu.getBoundingClientRect();
-    barW     = bl.width;
-    menuW    = m.width;
+    const R = rng(7000 + i * 131);
+    const step = 1.5;
+    const n = Math.ceil((X1 - x0) / step);
+    const A = H * 0.085;
+    const phi = i * 0.55;
+    const ph = [R() * 6.283, R() * 6.283, R() * 6.283];
+    const pts = [];
+    for (let k = 0; k <= n; k++) {
+      const x = x0 + k * step;
+      const u = clamp((x - xP) / (X1 - xP));
+      const y = ys[i] + A * Math.sin(u * Math.PI * 2.4 + phi) * smooth(0, .3, u) + (i - 1) * pitch * .85 * u;
+      let th = bh * PATCH;
+      if (x > xP) {
+        const m = PATCH - .5 * smooth(0, .5, u) - .5 * smooth(.5, 1, u);
+        th = bh * m * (1 + .16 * Math.sin(x * .043 + ph[0]) + .1 * Math.sin(x * .11 + ph[1]));
+      }
+      const rough = smooth(xP, xP + 60, x);
+      const eT = ((R() - .5) * .28 * bh + Math.sin(x * .9 + ph[2]) * .05 * bh) * rough;
+      const eB = (R() - .5) * .28 * bh * rough;
+      pts.push({ x, y, th, u, yt: y - th / 2 + eT, yb: y + th / 2 + eB });
+    }
+
+    g.fillStyle = '#000';
+    g.beginPath();
+    g.moveTo(pts[0].x, pts[0].yt);
+    for (const p of pts) g.lineTo(p.x, p.yt);
+    for (let k = pts.length - 1; k >= 0; k--) g.lineTo(pts[k].x, pts[k].yb);
+    g.closePath();
+    g.fill();
+
+    g.globalCompositeOperation = 'destination-out';
+    const kMin = Math.ceil((xP + 12 - x0) / step);
+    const dens = i === 1 ? 1.5 : 1;
+    for (let s = 0; s < 36 * dens; s++) {
+      const k0 = kMin + Math.floor(R() * (n - kMin));
+      const len = Math.floor((40 + R() * 260) / step);
+      const off = (R() - .5) * .8;
+      g.strokeStyle = `rgba(0,0,0,${(.35 + R() * .5).toFixed(2)})`;
+      g.lineWidth = .5 + R() * .9;
+      g.beginPath();
+      for (let k = k0; k <= Math.min(n, k0 + len); k++) {
+        const p = pts[k];
+        if (k === k0) g.moveTo(p.x, p.y + off * p.th);
+        else g.lineTo(p.x, p.y + off * p.th);
+      }
+      g.stroke();
+    }
+    for (let s = 0; s < 520 * dens; s++) {
+      const k = kMin + Math.floor(R() * (n - kMin));
+      const p = pts[k];
+      if (R() > .25 + .75 * p.u) continue;
+      g.fillStyle = `rgba(0,0,0,${(.5 + R() * .5).toFixed(2)})`;
+      g.fillRect(p.x, p.y + (R() - .5) * p.th * 1.05, 1 + R() * 4, .6 + R() * 1.3);
+    }
+    const xa = xP + (X1 - xP) * .5;
+    const gr = g.createLinearGradient(xa, 0, X1, 0);
+    gr.addColorStop(0, 'rgba(0,0,0,0)');
+    gr.addColorStop(1, 'rgba(0,0,0,.65)');
+    g.fillStyle = gr;
+    g.fillRect(xa, 0, X1 - xa + 4, H);
+    return c;
   }
 
-  function render(v) {
-    bars.forEach((bar, i) => {
-      const t = clamp((v - i * 0.045) / 0.955, 0, 1);
-      const skid = easeOut(t);
-      const wobble = Math.sin(t * Math.PI * 2.5 + i * 0.7) * barW * 0.08 * skid;
-      const sx = 1 - 0.28 * skid;
-      const tx = barW * 0.8 * skid + wobble;
-      const ty = FAN[i] * barW * 0.1 * skid;
-      const rot = FAN[i] * 11 * skid + Math.sin(t * Math.PI * 2.5 + i * 0.7) * 8 * skid;
-      [2, 6, 8, 12, 14].forEach(size => {
-        bar.style.setProperty(`--tread-${size === 14 ? 'period' : size}`, `${size / sx}px`);
+  function bake() {
+    const hr = header.getBoundingClientRect();
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const W = hr.width, H = hr.height;
+    cv.width = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    const rects = bars.map(b => b.getBoundingClientRect());
+    const x0 = rects[0].left - hr.left;
+    const bw = rects[0].width;
+    const bh = rects[0].height;
+    const ys = rects.map(r => r.top - hr.top + r.height / 2);
+    const pitch = ys[1] - ys[0];
+    const xP = x0 + bw;
+    const X1 = W + 70;
+    const geo = { W, H, dpr, x0, bw, bh, ys, pitch, xP, X1 };
+    G = { ...geo, tex: ys.map((_, i) => bakeTrack(i, geo)) };
+  }
+
+  function stateAt(i, time) {
+    const { x0, xP, X1 } = G;
+    const lt = time - i * STAGGER;
+    const pb = clamp(lt / T_BURN);
+    const ph = clamp((lt - T_BURN) / T_HEAD);
+    const pt = clamp((lt - T_TAIL_AT) / T_TAIL);
+    const creep = 9 * pb * (1 - ph) * (.5 + .5 * Math.sin(lt / 21));
+    const head = xP + creep + (X1 + 20 - xP) * Math.pow(ph, 2.2);
+    const tail = Math.min(x0 + (X1 + 30 - x0) * Math.pow(pt, 1.8), head);
+    const s = 1 / PATCH + (1 - 1 / PATCH) * (1 - Math.pow(1 - pb, 2));
+    const env = smooth(0, .12, pb) * (1 - smooth(0, .35, ph));
+    return { head, tail, s, env };
+  }
+
+  let puffs = [], openStart = 0;
+  function makeSmoke() {
+    const R = rng(4242);
+    puffs = [];
+    for (let k = 0; k < 24; k++) {
+      puffs.push({
+        born: R() * (T_BURN + 150),
+        x: G.xP - G.bw * .35 + R() * G.bw * .7,
+        y: G.ys[1] + (R() - .5) * G.pitch * 2,
+        vx: (R() - .05) * .07,
+        vy: -(.015 + R() * .045),
+        r0: 8 + R() * 10,
+        gr: .02 + R() * .035,
+        life: 450 + R() * 400,
+        a: .09 + R() * .10
       });
-      bar.style.backgroundPosition = `${-t * barW * 1.5}px 0, 0 0`;
-      bar.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg) scaleX(${sx})`;
-      bar.style.opacity = String([1, 0.78, 0.88][i] * (1 - skid));
-    });
-    const reveal = easeOut(v);
-    const edge = menuW * reveal;
-    const wave = Math.sin(v * Math.PI) * Math.min(18, menuW * 0.025);
-    menu.style.clipPath = `polygon(0 0, ${edge}px 0, ${edge + wave}px 25%, ${edge - wave}px 50%, ${edge + wave * 0.65}px 75%, ${edge}px 100%, 0 100%)`;
+    }
+  }
+  function drawSmoke(now) {
+    const t = now - openStart;
+    for (const p of puffs) {
+      const age = t - p.born;
+      if (age < 0 || age > p.life) continue;
+      const a = p.a * (1 - age / p.life) * Math.min(1, age / 90);
+      const r = p.r0 + p.gr * age;
+      const x = p.x + p.vx * age, y = p.y + p.vy * age;
+      const gr = ctx.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, `rgba(30,30,30,${a.toFixed(3)})`);
+      gr.addColorStop(1, 'rgba(30,30,30,0)');
+      ctx.fillStyle = gr;
+      ctx.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+  }
+
+  let time = 0, dir = 0, last = 0, raf = 0, isOpen = false, skidding = false;
+  function render(now) {
+    const { W, H, dpr, ys, tex, x0 } = G;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    if (dir > 0) drawSmoke(now);
+    let tailMin = Infinity;
+    for (let i = 0; i < 3; i++) {
+      const st = stateAt(i, time);
+      tailMin = Math.min(tailMin, st.tail);
+      const hd = Math.min(st.head, W), tl = Math.min(st.tail, W);
+      if (hd - tl < .5) continue;
+      const jx = (Math.random() - .5) * 2 * 2.4 * st.env;
+      const jy = (Math.random() - .5) * 2 * .9 * st.env;
+      ctx.save();
+      ctx.translate(jx, ys[i] + jy);
+      ctx.scale(1, st.s);
+      ctx.translate(0, -ys[i]);
+      ctx.drawImage(tex[i], tl * dpr, 0, (hd - tl) * dpr, cv.height, tl, 0, hd - tl, H);
+      ctx.restore();
+    }
+    menu.style.setProperty('--rx', Math.max(0, tailMin - x0) + 'px');
   }
 
   function loop(now) {
-    const dt = Math.min(0.05, (now - last) / 1000);
+    const dt = Math.min(48, now - last);
     last = now;
-    const dir = target > p ? 1 : -1;
-    p = clamp(p + dir * dt / 0.95, 0, 1);
-    if ((dir > 0 && p >= target) || (dir < 0 && p <= target)) p = target;
-    render(p);
-    if (p !== target) raf = requestAnimationFrame(loop);
+    time = clamp(time + dir * dt * (dir > 0 ? 1 : 1.4), 0, TOTAL);
+    if (time > 0 && !skidding) { skidding = true; burger.classList.add('is-skidding'); }
+    render(now);
+    const smoking = dir > 0 && now - openStart < SMOKE_END;
+    if ((dir > 0 && (time < TOTAL || smoking)) || (dir < 0 && time > 0)) {
+      raf = requestAnimationFrame(loop);
+      return;
+    }
+    raf = 0;
+    if (time <= 0) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      burger.classList.remove('is-skidding');
+      skidding = false;
+      menu.style.setProperty('--rx', '0px');
+    }
   }
 
-  function setOpen(open) {
-    isOpen = open;
-    burger.setAttribute('aria-expanded', String(open));
-    menu.inert = !open;
-    target = open ? 1 : 0;
-    cancelAnimationFrame(raf);
-    if (reduce.matches) { p = target; render(p); return; }
-    last = performance.now();
-    raf = requestAnimationFrame(loop);
+  function toggle() {
+    isOpen = !isOpen;
+    burger.setAttribute('aria-expanded', String(isOpen));
+    header.classList.toggle('is-open', isOpen);
+    menu.inert = !isOpen;
+    if (reduce.matches) return;
+    if (!G) bake();
+    dir = isOpen ? 1 : -1;
+    if (isOpen) { openStart = performance.now(); makeSmoke(); }
+    else puffs = [];
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
   }
 
-  burger.addEventListener('click', e => { e.stopPropagation(); setOpen(!isOpen); });
-  menu.addEventListener('click', e => { if (e.target.closest('a')) setOpen(false); });
-  document.addEventListener('click', e => { if (isOpen && !header.contains(e.target)) setOpen(false); });
+  burger.addEventListener('click', toggle);
+  menu.addEventListener('click', e => { if (e.target.closest('a')) toggle(); });
+  document.addEventListener('click', e => { if (isOpen && !header.contains(e.target)) toggle(); });
   addEventListener('keydown', e => {
-    if (e.key === 'Escape' && isOpen) { setOpen(false); burger.focus(); }
+    if (e.key === 'Escape' && isOpen) {
+      const hadFocus = menu.contains(document.activeElement);
+      toggle();
+      if (hadFocus) burger.focus();
+    }
   });
 
-  /* 3. Opstarten */
   fit();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-  addEventListener('load', fit);
-  addEventListener('resize', fit);
+  let rt = 0;
+  addEventListener('resize', () => {
+    cancelAnimationFrame(rt);
+    rt = requestAnimationFrame(() => {
+      fit();
+      if (raf) return;
+      G = null;
+      if (isOpen && !reduce.matches) { bake(); render(performance.now()); }
+    });
+  });
 })();
 </script>
 </body>
