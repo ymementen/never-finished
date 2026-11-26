@@ -69,21 +69,6 @@
   .bar:nth-child(2) { opacity: .78; }
   .bar:nth-child(3) { opacity: .88; }
 
-  .escape-car {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    left: 0;
-    width: clamp(36px, calc(var(--bw) * .48), 58px);
-    height: auto;
-    overflow: visible;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate3d(0, -50%, 0);
-    transform-origin: center;
-    will-change: transform, opacity;
-  }
-
   .menu {
     position: absolute;
     top: max(14px, 2vw);
@@ -167,16 +152,6 @@
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>
-    <svg class="escape-car" viewBox="0 0 90 44" aria-hidden="true">
-      <path d="M7 29h7l5-12q1-3 5-3h12l9-10h19q3 0 5 3l8 7h6l6 12h3v8H7z" fill="#ff00ff"/>
-      <path d="M26 16h10l9-9h9v9H26zm32-9h5l10 9H58z" fill="#fff"/>
-      <circle cx="63" cy="11" r="3" fill="#000"/>
-      <path d="M58 17q1-5 5-5t5 5" fill="#000"/>
-      <circle cx="25" cy="32" r="7" fill="#000"/>
-      <circle cx="67" cy="32" r="7" fill="#000"/>
-      <circle cx="25" cy="32" r="2.5" fill="#fff"/>
-      <circle cx="67" cy="32" r="2.5" fill="#fff"/>
-    </svg>
   </button>
   <nav class="menu" id="menu" aria-label="Cars of the week" inert>
     <a href="#car-1">1.</a>
@@ -209,7 +184,6 @@
   const header = document.getElementById('top');
   const burger = header.querySelector('.burger');
   const bars   = [...burger.querySelectorAll('.bar')];
-  const car    = burger.querySelector('.escape-car');
   const menu   = document.getElementById('menu');
   const lines  = [...document.querySelectorAll('.title .line')];
   const tags   = [...document.querySelectorAll('.tag span')];
@@ -239,57 +213,45 @@
   /* 2. Hamburger = remspoor */
   const FAN = [-2.4, 0, 2.4];
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-  const easeIn  = t => t * t * t;
   const easeOut = t => 1 - Math.pow(1 - t, 3);
 
-  let baseLeft = 0, barW = 1, reach = 0, S = 1, menuLeft = 0, menuW = 1;
+  let barW = 1, menuW = 1;
   let p = 0, target = 0, last = 0, raf = 0, isOpen = false;
 
   function measure() {
     const bl = burger.getBoundingClientRect();
     const m  = menu.getBoundingClientRect();
-    baseLeft = bl.left;
     barW     = bl.width;
-    reach    = root.clientWidth - baseLeft + 60;
-    S        = reach / barW;
-    menuLeft = m.left;
     menuW    = m.width;
   }
 
   function render(v) {
-    let tail = Infinity;
     bars.forEach((bar, i) => {
-      const t = clamp((v - i * 0.06) / 0.88, 0, 1);
-      let sx = 1, tx = 0, rot = 0;
-      if (t < 0.42) {
-        const k = easeOut(t / 0.42);
-        sx = 1 + (S - 1) * k;
-        rot = FAN[i] * k;
-      } else {
-        const k = easeIn((t - 0.42) / 0.58);
-        sx = S; rot = FAN[i]; tx = reach * k;
-      }
+      const t = clamp((v - i * 0.045) / 0.955, 0, 1);
+      const skid = easeOut(t);
+      const wobble = Math.sin(t * Math.PI * 2.5 + i * 0.7) * barW * 0.08 * skid;
+      const sx = 1 - 0.28 * skid;
+      const tx = barW * 0.8 * skid + wobble;
+      const ty = FAN[i] * barW * 0.1 * skid;
+      const rot = FAN[i] * 11 * skid + Math.sin(t * Math.PI * 2.5 + i * 0.7) * 8 * skid;
       [2, 6, 8, 12, 14].forEach(size => {
         bar.style.setProperty(`--tread-${size === 14 ? 'period' : size}`, `${size / sx}px`);
       });
-      bar.style.transform = `translateX(${tx}px) rotate(${rot}deg) scaleX(${sx})`;
-      tail = Math.min(tail, baseLeft + tx);
+      bar.style.backgroundPosition = `${-t * barW * 1.5}px 0, 0 0`;
+      bar.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg) scaleX(${sx})`;
+      bar.style.opacity = String([1, 0.78, 0.88][i] * (1 - skid));
     });
-    const drive = easeIn(clamp((v - 0.38) / 0.62, 0, 1));
-    const carScale = 1 - drive * 0.68;
-    const carOpacity = clamp(v / 0.14, 0, 1) * clamp((1 - v) / 0.18, 0, 1);
-    const heading = target ? 1 : -1;
-    car.style.opacity = carOpacity;
-    car.style.transform = `translate3d(${reach * drive}px, calc(-50% - ${drive * 10}px), 0) scaleX(${heading}) scale(${carScale})`;
-    const visible = clamp(tail - menuLeft, 0, menuW);
-    menu.style.clipPath = `inset(-50px ${menuW - visible}px -50px 0)`;
+    const reveal = easeOut(v);
+    const edge = menuW * reveal;
+    const wave = Math.sin(v * Math.PI) * Math.min(18, menuW * 0.025);
+    menu.style.clipPath = `polygon(0 0, ${edge}px 0, ${edge + wave}px 25%, ${edge - wave}px 50%, ${edge + wave * 0.65}px 75%, ${edge}px 100%, 0 100%)`;
   }
 
   function loop(now) {
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     const dir = target > p ? 1 : -1;
-    p = clamp(p + dir * dt / 1.1, 0, 1);
+    p = clamp(p + dir * dt / 0.95, 0, 1);
     if ((dir > 0 && p >= target) || (dir < 0 && p <= target)) p = target;
     render(p);
     if (p !== target) raf = requestAnimationFrame(loop);
