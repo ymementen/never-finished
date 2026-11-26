@@ -69,6 +69,21 @@
   .bar:nth-child(2) { opacity: .78; }
   .bar:nth-child(3) { opacity: .88; }
 
+  .escape-car {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0;
+    width: clamp(36px, calc(var(--bw) * .48), 58px);
+    height: auto;
+    overflow: visible;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(0, -50%, 0);
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+
   .menu {
     position: absolute;
     top: max(14px, 2vw);
@@ -152,6 +167,16 @@
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>
+    <svg class="escape-car" viewBox="0 0 90 44" aria-hidden="true">
+      <path d="M7 29h7l5-12q1-3 5-3h12l9-10h19q3 0 5 3l8 7h6l6 12h3v8H7z" fill="#ff00ff"/>
+      <path d="M26 16h10l9-9h9v9H26zm32-9h5l10 9H58z" fill="#fff"/>
+      <circle cx="63" cy="11" r="3" fill="#000"/>
+      <path d="M58 17q1-5 5-5t5 5" fill="#000"/>
+      <circle cx="25" cy="32" r="7" fill="#000"/>
+      <circle cx="67" cy="32" r="7" fill="#000"/>
+      <circle cx="25" cy="32" r="2.5" fill="#fff"/>
+      <circle cx="67" cy="32" r="2.5" fill="#fff"/>
+    </svg>
   </button>
   <nav class="menu" id="menu" aria-label="Cars of the week" inert>
     <a href="#car-1">1.</a>
@@ -184,6 +209,7 @@
   const header = document.getElementById('top');
   const burger = header.querySelector('.burger');
   const bars   = [...burger.querySelectorAll('.bar')];
+  const car    = burger.querySelector('.escape-car');
   const menu   = document.getElementById('menu');
   const lines  = [...document.querySelectorAll('.title .line')];
   const tags   = [...document.querySelectorAll('.tag span')];
@@ -249,6 +275,12 @@
       bar.style.transform = `translateX(${tx}px) rotate(${rot}deg) scaleX(${sx})`;
       tail = Math.min(tail, baseLeft + tx);
     });
+    const drive = easeIn(clamp((v - 0.38) / 0.62, 0, 1));
+    const carScale = 1 - drive * 0.68;
+    const carOpacity = clamp(v / 0.14, 0, 1) * clamp((1 - v) / 0.18, 0, 1);
+    const heading = target ? 1 : -1;
+    car.style.opacity = carOpacity;
+    car.style.transform = `translate3d(${reach * drive}px, calc(-50% - ${drive * 10}px), 0) scaleX(${heading}) scale(${carScale})`;
     const visible = clamp(tail - menuLeft, 0, menuW);
     menu.style.clipPath = `inset(-50px ${menuW - visible}px -50px 0)`;
   }
@@ -257,7 +289,7 @@
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     const dir = target > p ? 1 : -1;
-    p = clamp(p + dir * dt / 0.85, 0, 1);
+    p = clamp(p + dir * dt / 1.1, 0, 1);
     if ((dir > 0 && p >= target) || (dir < 0 && p <= target)) p = target;
     render(p);
     if (p !== target) raf = requestAnimationFrame(loop);
